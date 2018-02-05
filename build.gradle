@@ -1,12 +1,13 @@
 buildscript {
     repositories {
+        mavenLocal()
         mavenCentral()
     }
 }
 apply plugin: 'maven'
 apply plugin: 'idea'
+apply plugin: 'groovy'
 
-group = 'jumio.oss'
 version = '1.0-SNAPSHOT'
 
 ext.gebVersion = '0.9.3'
@@ -19,8 +20,26 @@ ext.iosClientVersion = '0.6+'
 
 
 
+
+// ext {
+//     groovyVersion = '2.4.12'
+//     gebVersion = '2.0'
+//     seleniumVersion = '3.6.0'
+//     spockVersion = '1.1-groovy-2.4'
+//     appiumClientVersion = '4.1.2'
+//     selendroidVersion = '0.17.0'
+//     iosClientVersion = '0.6.5'
+//     slf4jVersion = '1.7.13'
+//     logbackVersion = '1.2.3'
+//     junitVersion = '4.11'
+// }
+
+
+
+
 allprojects {
     apply plugin: 'idea'
+    apply plugin: 'groovy'
 
     repositories {
         mavenLocal()
@@ -32,6 +51,35 @@ allprojects {
 subprojects {
     apply plugin: 'groovy'
     apply plugin: 'idea'
+
+    // dependencies {
+
+    //     compile "io.selendroid:selendroid-standalone:$selendroidVersion"
+    //     compile "io.selendroid:selendroid-client:$selendroidVersion"
+    //     compile "org.uiautomation:ios-client:$iosClientVersion"
+    //     compile("io.appium:java-client:$appiumClientVersion")
+    //     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+    //     compile "org.slf4j:slf4j-api:$slf4jVersion"
+    //     compile "ch.qos.logback:logback-classic:$logbackVersion"
+    //     compile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+
+    //     // compile group: 'junit', name: 'junit', version: '$junitVersion'
+    //     compile "junit:junit:$junitVersion"
+
+    //     compile("org.gebish:geb-spock:$gebVersion") {
+    //         exclude module: "groovy"
+    //         exclude module: "groovy-all"
+    //     }
+    //     compile("org.spockframework:spock-core:$spockVersion") {
+    //         exclude module: "junit"
+    //         exclude module: "groovy"
+    //         exclude module: "groovy-all"
+    //     }
+
+    //     // testCompile group: 'junit', name: 'junit', version: '$junitVersion'
+    //     testCompile "junit:junit:$junitVersion"
+    // }
+
 
     dependencies {
 
@@ -59,8 +107,65 @@ subprojects {
     }
 
 
+
+
+
+
 }
 
+def startServer = { server, command ->
+    if (System.properties.'skipServer') {
+        println "Skipping Server $server "; return
+    }
+    println "Starting $server with $command"
+    ProcessBuilder builder = new ProcessBuilder(command.split(' '))
+    builder.redirectErrorStream(true)
+    builder.directory(buildDir)
+    Process process = builder.start()
+    project.ext[server] = process
+    println "$server started : $process"
+    def loggingThread = Thread.start("logging-$server") {
+        FileOutputStream fout = new FileOutputStream(new File(buildDir, "${server}.log"))
+        int bb
+        while ((bb = process.getInputStream().read()) > 0) {
+            fout.write(bb)
+        }
+    }
+    if (System.getProperty("waitForServer")) {
+        println "Joining Server Logging Thread"
+        loggingThread.join()
+    }
+}
+
+def stopServer = { server ->
+    println "Stopping $server"
+    if (project.ext.has(server)) {
+        Process process = ext.get(server)
+        println "send CTRL-C to server"
+        try {
+            process.getOutputStream().write(3)
+            process.getOutputStream().flush()
+        } catch (e) {
+        }
+        process.destroy()
+    } else {
+        println "No Server $server found in process list"
+    }
+}
+
+task startAppium(group: 'Server') {
+    doLast {
+        startServer("SERVER_APPIUM", "appium --command-timeout 90000")
+    }
+}
+
+task stopServers(group: 'Server') {
+    doLast {
+        project.ext.properties.each { k, v ->
+            if (k =~ /^SERVER_/ && project.ext.has(k)) stopServer(k)
+        }
+    }
+}
 
 task checkenv {
     doLast {
