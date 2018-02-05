@@ -4,8 +4,8 @@ buildscript {
         mavenCentral()
     }
 }
-
-def branch = System.getProperty('branch','master')
-group = 'jumio.oss'
-version = (branch == 'master' ? '1.1-SNAPSHOT' : branch )
+// delete reference to github:
+// def branch = System.getProperty('branch','master')
+// group = 'jumio.oss'
+// version = (branch == 'master' ? '1.1-SNAPSHOT' : branch )
 
