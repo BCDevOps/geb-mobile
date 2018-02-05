@@ -7,12 +7,66 @@ import geb.navigator.Navigator
 import groovy.util.logging.Slf4j
 import io.appium.java_client.MobileElement
 import io.appium.java_client.android.AndroidDriver
+import io.appium.java_client.android.AndroidElement
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
+
+
+
+import java.net.URL
+import java.util.List
+import java.net.MalformedURLException
+import io.appium.java_client.MobileBy
+import io.appium.java_client.android.AndroidDriver
+import io.appium.java_client.android.AndroidElement
+import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.WebDriverWait
+
+import io.appium.java_client.MobileBy
+
+
 
 /**
  * Created by gmueksch on 23.06.14.
  */
+
+
+
+
+// Appium find by:
+// 1. Accessibility ID:
+// 1.1 resource-id for iOS
+// 1.2 content-desc for android
+// 
+// 2. Class name
+// 3. ID / Name
+// 4. XPath
+// 5. From the platform: AndroidUIAutomator / IOSUIAutomation
+
+
+
+// String all,key,value
+//         if (selectorString.startsWith("#")) {
+//             key = "id"
+//             value = selectorString.substring(1)
+//         } else {
+//             def m = pat.matcher(selectorString)
+//             if (m.matches()) {
+//                 (all,key,value)=m[0]
+//                 log.debug "Match for ${key}='${value}' in $selectorString"
+//             }
+//         }
+//         if( key && value ) {
+//             log.debug("Key:$key , Value: $value")
+//             navigatorFor driver.findElements(By."$key"(value))
+//         }else{
+//             log.warn("Ether key '$key' or value '$value' is not filled")
+//             new EmptyNavigator()
+//         }
+
+
+
+
 @Slf4j
 class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigator<AndroidDriver> {
 
@@ -27,11 +81,11 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
     @Override
     Navigator find(String selectorString) {
         log.debug "Selector: $selectorString"
-
+// XPath:
         if (selectorString.startsWith("//")) {
             return navigatorFor(driver.findElements(By.xpath(selectorString)))
         }
-
+// ID:
         if (selectorString.startsWith("#")) {
             String value = selectorString.substring(1)
             if( value.indexOf(':')>0 ) {
@@ -55,15 +109,22 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
                     return new EmptyNavigator()
                 }
             }
-        } else if( selectorString.startsWith(".") ){
-            //This works only on WEB_VIEW
-            return navigatorFor(driver.findElementsByCssSelector(selectorString) )
-        } else {
-            selectorString = selectorString.replaceAll("'", '\"')
-            log.debug "Using UIAutomator with: $selectorString"
-            navigatorFor(driver.findElementsByAndroidUIAutomator(selectorString))
         }
-
+// WEB_VIEW:
+        else if ( selectorString.startsWith(".") ){
+            log.debug "At web view with: $selectorString"
+            return navigatorFor(driver.findElementsByCssSelector(selectorString))
+        } 
+// Class Name:
+        else if (selectorString.indexOf('.') > 1) {
+            log.debug "Using Class Name with: $selectorString"
+            return navigatorFor(driver.findElementsByClassName(selectorString))
+        }
+// Accessibility ID (content_Desc):
+        else {
+            log.debug "Using Accessibility ID with: $selectorString"
+            return navigatorFor(driver.findElementsByAccessibilityId(selectorString))
+        }
     }
 
 

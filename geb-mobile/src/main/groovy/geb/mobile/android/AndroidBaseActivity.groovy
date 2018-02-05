@@ -3,7 +3,6 @@ package geb.mobile.android
 import geb.Page
 import io.appium.java_client.MobileElement
 import io.appium.java_client.android.AndroidDriver
-import io.selendroid.SelendroidDriver
 import org.openqa.selenium.Dimension
 
 /**
@@ -11,7 +10,7 @@ import org.openqa.selenium.Dimension
  * - Provides auto at checker with the currentActivity
  * - back, menu and home action
  * - performTap
- * - differs between appium and selendroid driver
+ * - differs between appium and selendroid driver ----> no selendroid
  * TODO: get rid of the 'instanceof', use mixin or traits, i'm still in the java-thinkin-way...
  *
  */
@@ -21,7 +20,8 @@ abstract class AndroidBaseActivity extends Page {
     private AndroidHelper _helper
 
     static at = {
-        getActivityName() ? currentActivity == getActivityName() : true
+        // here the activity not match:
+        getCurrentActivity() ? currentActivity == getCurrentActivity() : true
     }
 
     public AndroidHelper getHelper(){
@@ -73,10 +73,7 @@ abstract class AndroidBaseActivity extends Page {
     }
 
     public boolean performTap(x,y){
-        if( driver instanceof AndroidDriver)
-            new io.appium.java_client.TouchAction(driver).tap(x.intValue(), y.intValue()).perform()
-        else if ( driver instanceof SelendroidDriver )
-            driver.getTouch().down(x.intValue(), y.intValue())
+        new io.appium.java_client.TouchAction(driver).tap(x.intValue(), y.intValue()).perform()
     }
 
     public MobileElement scrollTo(String text){
