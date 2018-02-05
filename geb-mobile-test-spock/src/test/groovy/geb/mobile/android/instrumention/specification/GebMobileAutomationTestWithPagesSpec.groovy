@@ -16,9 +16,9 @@ class GebMobileAutomationTestWithPagesSpec extends GebMobileBaseSpec {
             searchButton.click()
 
         and: "I type in search string"
-            // searchText.sendKeys("BrowserStack")
             searchText.click()
-            searchText.sendKeys("BrowserStack")
+            // sendKeys not supported by old drivers
+            // searchText.sendKeys("BrowserStack")
 
         then: "I should see results"
             assert resultList.size() > 0
