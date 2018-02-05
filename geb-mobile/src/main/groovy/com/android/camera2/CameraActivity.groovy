@@ -24,6 +24,8 @@ class CameraActivity extends AndroidBaseActivity{
 
     }
 
+
+// replace the default activity to locate camera:
     @Override
     String getActivityName() {
         null
