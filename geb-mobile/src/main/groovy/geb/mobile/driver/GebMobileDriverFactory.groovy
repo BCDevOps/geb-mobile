@@ -32,7 +32,7 @@ class GebMobileDriverFactory {
     public static String FRAMEWORK_SELENIUM = "selenium"
 
     public static URL getURL(String url) {
-        String seleniumUrl = System.getProperty("selenium.url")
+        String seleniumUrl = System.getProperty("appium.url")
         if (seleniumUrl) return new URL(seleniumUrl)
         else return new URL(url)
     }

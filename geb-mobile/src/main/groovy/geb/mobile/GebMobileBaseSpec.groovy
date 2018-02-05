@@ -1,6 +1,6 @@
 package geb.mobile
 
-import geb.mobile.helper.GebMobileScreenshotRule
+// import geb.mobile.helper.GebMobileScreenshotRule
 import geb.spock.GebSpec
 import groovy.util.logging.Slf4j
 import io.appium.java_client.AppiumDriver
@@ -13,18 +13,24 @@ import java.awt.image.BufferedImage
 
 /**
  * Created by gmueksch on 26.06.14.
+*
+*
+ *Slf4j static logger factory for java
  */
+
+
+
 @Ignore
 @Slf4j
 class GebMobileBaseSpec extends GebSpec {
 
-    @Rule
-    public GebMobileScreenshotRule screenShotRule = new GebMobileScreenshotRule(baseSpec:this)
+    // @Rule
+    // public GebMobileScreenshotRule screenShotRule = new GebMobileScreenshotRule(baseSpec:this)
 
 
-    BufferedImage getScreenShotAsImage() {
-        ImageIO.read(new ByteArrayInputStream(driver.getScreenshotAs(OutputType.BYTES)))
-    }
+    // BufferedImage getScreenShotAsImage() {
+    //     ImageIO.read(new ByteArrayInputStream(driver.getScreenshotAs(OutputType.BYTES)))
+    // }
 
     /**
      * expects that something before startet a camera app
