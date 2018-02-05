@@ -1,21 +1,30 @@
 package geb.mobile.android.instrumention.activities
-
 import geb.mobile.android.AndroidBaseActivity
 
-/**
- * Created by gmueksch on 23.06.14.
- */
+import io.appium.java_client.MobileBy
+import io.appium.java_client.android.AndroidDriver
+import io.appium.java_client.android.AndroidElement
+import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.WebDriverWait
+
 class HomeScreenActivity extends AndroidBaseActivity {
 
     static content = {
-        pageTitle { $("#title").text() }
-        buttonTest { $("#buttonTest") }
-        startWebviewButton { $("name='buttonStartWebviewCD'") }
-        startUserRegistrationButton { $("#startUserRegistration") }
-        waitingButton { $("#waitingButtonTest") }
-        inputAddsCheckbox { $("#input_adds_check_box") }
-        visibleButton { $("#visibleButtonTest") }
-        visibleTextView { $("#visibleTextView") }
-        myTextField { $("#my_text_field") }
+        searchButton {$("Search Wikipedia")}
+
+        // searchText { 
+        //     AndroidElement insertTextElement = (AndroidElement) new WebDriverWait(driver, 30).until(
+        //         ExpectedConditions.elementToBeClickable(MobileBy.id("org.wikipedia.alpha:id/search_src_text")))
+        //     return insertTextElement
+        // }
+
+        searchText {$("#search_src_text")}
+        
+        // resultList {
+        //     List<AndroidElement> allProductsName = driver.findElementsByClassName("android.widget.TextView")
+        //     return allProductsName
+        // }
+
+        resultList {$("android.widget.TextView")}
     }
 }
