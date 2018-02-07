@@ -134,15 +134,14 @@ class GebMobileDriverFactory {
             else {
                 // Appium use XCUITest Driver instead of UIAutomation Driver now, for apps of iOS 9.3 and up:
                 // if (capa.getCapability("automationName") == "XCUITest") {
-
-                //     log.info("Create Appium XCUITest-Driver")
-
-                //     driver = new AndroidUiautomator2Driver("http://localhost:4723/wd/hub"), capa);
-                //     driver.setFileDetector(new LocalFileDetector())
-                //     sleep(1000)
-                //     log.info("Driver created: $driver.capabilities")
-                //     return driver
+                    // log.info("Create Appium XCUITest-Driver")
+                    // need to set additional capa:
+                    // desired_caps['udid'] = udid
+                    // desired_caps['automationName'] = 'XCUITest'
+                    // desired_caps['realDeviceLogger'] = 'idevicesyslog'
+                    // driver = new webdriver.Remote('http://0.0.0.0:4723/wd/hub', capa)
                 // }
+
                 log.info("Create Appium IOSDriver")
                 driver = new IOSDriver(getURL("http://localhost:4723/wd/hub"), capa)
                 driver.setFileDetector(new LocalFileDetector())
