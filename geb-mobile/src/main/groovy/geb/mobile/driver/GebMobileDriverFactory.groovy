@@ -27,6 +27,29 @@ import org.openqa.selenium.remote.RemoteWebDriver
  * TODO: automatically figure out what type of server is running, could be done with json requests
  * TODO: refactor the if/then construct
  */
+
+
+
+/*
+The appium drivers:
+
+iOS
+    The XCUITest Driver
+    (DEPRECATED) The UIAutomation Driver
+
+Android
+    (BETA) The Espresso Driver
+    The UiAutomator2 Driver
+    (DEPRECATED) The UiAutomator Driver
+    (DEPRECATED) The Selendroid Driver
+
+The Windows Driver (for Windows Desktop apps)
+
+The Mac Driver (for Mac Desktop apps)
+*/
+
+
+
 @Slf4j
 class GebMobileDriverFactory {
 
@@ -61,7 +84,7 @@ class GebMobileDriverFactory {
                 }
             }
             def driver
-
+            // Android:
             if (capa.getCapability("platformName") == "Android") {
                 capa.setCapability("platform", Platform.ANDROID)
                 if( appPackage() ) capa.setCapability("appPackage", appPackage())
@@ -70,15 +93,25 @@ class GebMobileDriverFactory {
                 if (!capa.getCapability("deviceName")) capa.setCapability("deviceName", "Android");
 
 
+                // Appium use UiAutomator2 instead of selendroid now: (https://appium.io/docs/en/drivers/android-uiautomator2/index.html)
+                // for android native apps only!
+                // here: Appium android with Espresso is coming! (https://github.com/appium/appium)
+                if (capa.getCapability("automationName") == "UiAutomator2") {
 
-                if (capa.getCapability("automationName") == "selendroid") {
-                    log.info("Create SelendroidDriver for Appium, cause AutomationName is set to selendroid")
-                    driver = new SelendroidDriver(getURL("http://localhost:4723/wd/hub"), capa)
+                    log.info("Create Appium UiAutomator2-Driver (SelendroidDriver)")
+
+                    // create new seesion:
+                    // driver = new AndroidUiautomator2Driver();
+                    // await driver.createSession(getURL("http://localhost:4723/wd/hub"), capa);
+
+                    driver = new AndroidUiautomator2Driver("http://localhost:4723/wd/hub"), capa);
                     driver.setFileDetector(new LocalFileDetector())
+                    sleep(1000)
+                    log.info("Driver created: $driver.capabilities")
                     return driver
                 }
 
-                log.info("Create AppiumDriver ")
+                log.info("Create Appium AndroidDriver")
                 try {
                     driver = new AndroidDriver(getURL("http://localhost:4723/wd/hub"), capa)
                     driver.setFileDetector(new LocalFileDetector())
@@ -89,21 +122,21 @@ class GebMobileDriverFactory {
                     //
                     log.error("eXC: $e.message", e)
                     if (e.message =~ /Android devices must be of API level 17 or higher/) {
-                        capa.setCapability("automationName", "selendroid")
-                        try {
-                            driver = new SelendroidDriver(getURL("http://localhost:4723/wd/hub"), capa)
-                            driver.setFileDetector(new LocalFileDetector())
-                        } catch (ex) {
-                            log.error("Error:", ex)
-                        }
+                        log.error("Do not support Android API lower than 17.")
+                        // if API lower than 17, use selendroid, for now we do not want to support this:
+                        // capa.setCapability("automationName", "selendroid")
+                        // try {
+                        //     driver = new SelendroidDriver(getURL("http://localhost:4723/wd/hub"), capa)
+                        //     driver.setFileDetector(new LocalFileDetector())
+                        // } catch (ex) {
+                        //     log.error("Error:", ex)
+                        // }
                     }
                 }
             }
 
 
-
-
-
+            // iOS:
             else{
                 log.info("Create Appium IOSDriver ")
                 driver = new IOSDriver(getURL("http://localhost:4723/wd/hub"), capa)
@@ -114,10 +147,6 @@ class GebMobileDriverFactory {
 
             if (!driver) throw new RuntimeException("Appiumdriver could not be started")
         } 
-
-
-
-
 
 
         else if (useIosDriver()) {
