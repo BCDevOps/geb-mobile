@@ -10,32 +10,18 @@ apply plugin: 'groovy'
 
 version = '1.0-SNAPSHOT'
 
-ext.gebVersion = '0.9.3'
-ext.seleniumVersion = '2.53.1'
-ext.spockVersion = '0.7-groovy-2.0'
-ext.groovyVersion = '2.3.4'
-ext.selendroidVersion = '0.11.0'
-ext.appiumClientVersion = '2.1.0'
-ext.iosClientVersion = '0.6+'
-
-
-
-
-// ext {
-//     groovyVersion = '2.4.12'
-//     gebVersion = '2.0'
-//     seleniumVersion = '3.6.0'
-//     spockVersion = '1.1-groovy-2.4'
-//     appiumClientVersion = '4.1.2'
-//     selendroidVersion = '0.17.0'
-//     iosClientVersion = '0.6.5'
-//     slf4jVersion = '1.7.13'
-//     logbackVersion = '1.2.3'
-//     junitVersion = '4.11'
-// }
-
-
-
+ext {
+    groovyVersion = '2.4.12'
+    gebVersion = '2.0'
+    seleniumVersion = '3.6.0'
+    spockVersion = '1.1-groovy-2.4'
+    appiumClientVersion = '4.1.2'
+    selendroidVersion = '0.17.0'
+    iosClientVersion = '0.6.5'
+    slf4jVersion = '1.7.13'
+    logbackVersion = '1.2.3'
+    junitVersion = '4.11'
+}
 
 allprojects {
     apply plugin: 'idea'
@@ -52,47 +38,8 @@ subprojects {
     apply plugin: 'groovy'
     apply plugin: 'idea'
 
-    // dependencies {
-
-    //     compile "io.selendroid:selendroid-standalone:$selendroidVersion"
-    //     compile "io.selendroid:selendroid-client:$selendroidVersion"
-    //     compile "org.uiautomation:ios-client:$iosClientVersion"
-    //     compile("io.appium:java-client:$appiumClientVersion")
-    //     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-    //     compile "org.slf4j:slf4j-api:$slf4jVersion"
-    //     compile "ch.qos.logback:logback-classic:$logbackVersion"
-    //     compile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
-
-    //     // compile group: 'junit', name: 'junit', version: '$junitVersion'
-    //     compile "junit:junit:$junitVersion"
-
-    //     compile("org.gebish:geb-spock:$gebVersion") {
-    //         exclude module: "groovy"
-    //         exclude module: "groovy-all"
-    //     }
-    //     compile("org.spockframework:spock-core:$spockVersion") {
-    //         exclude module: "junit"
-    //         exclude module: "groovy"
-    //         exclude module: "groovy-all"
-    //     }
-
-    //     // testCompile group: 'junit', name: 'junit', version: '$junitVersion'
-    //     testCompile "junit:junit:$junitVersion"
-    // }
-
-
     dependencies {
 
-        compile "io.selendroid:selendroid-standalone:$selendroidVersion"
-        compile "io.selendroid:selendroid-client:$selendroidVersion"
-        compile "org.uiautomation:ios-client:$iosClientVersion"
-        compile("io.appium:java-client:$appiumClientVersion")
-        compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-        compile "org.slf4j:slf4j-api:1.7.6"
-        compile 'ch.qos.logback:logback-classic:1.1.2'
-        compile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
-
-        compile group: 'junit', name: 'junit', version: '4.11'
         compile("org.gebish:geb-spock:$gebVersion") {
             exclude module: "groovy"
             exclude module: "groovy-all"
@@ -103,14 +50,25 @@ subprojects {
             exclude module: "groovy-all"
         }
 
-        testCompile group: 'junit', name: 'junit', version: '4.11'
+        compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+        compile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+
+
+// should not need these two: selendroid and iOSClient:
+        compile "io.selendroid:selendroid-standalone:$selendroidVersion"
+        compile "io.selendroid:selendroid-client:$selendroidVersion"
+        compile "org.uiautomation:ios-client:$iosClientVersion"
+// ------------------------------------------------------------------
+
+        compile "io.appium:java-client:$appiumClientVersion"
+
+        compile "org.slf4j:slf4j-api:$slf4jVersion"
+        testCompile 'org.slf4j:slf4j-simple:$slf4jVersion'
+        compile "ch.qos.logback:logback-classic:$logbackVersion"
+
+        compile "junit:junit:$junitVersion"
+        testCompile "junit:junit:$junitVersion"
     }
-
-
-
-
-
-
 }
 
 def startServer = { server, command ->
