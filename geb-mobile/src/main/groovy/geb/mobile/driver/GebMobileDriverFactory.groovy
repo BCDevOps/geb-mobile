@@ -70,7 +70,7 @@ class GebMobileDriverFactory {
     public static RemoteWebDriver createMobileDriverInstance() {
         log.info("Create Mobile Driver Instance for Framework ${System.properties.framework} ... ")
 
-// only using appium:
+// Using appium:
         if (useAppium()) {
             DesiredCapabilities capa = new DesiredCapabilities()
             //set default platform to android:
@@ -92,18 +92,14 @@ class GebMobileDriverFactory {
                 // set default name to Android for emulator:
                 if (!capa.getCapability("deviceName")) capa.setCapability("deviceName", "Android");
 
-
                 // Appium use UiAutomator2 instead of selendroid now: (https://appium.io/docs/en/drivers/android-uiautomator2/index.html)
                 // for android native apps only!
                 // here: Appium android with Espresso is coming! (https://github.com/appium/appium)
                 if (capa.getCapability("automationName") == "UiAutomator2") {
-
                     log.info("Create Appium UiAutomator2-Driver (SelendroidDriver)")
-
                     // create new seesion:
                     // driver = new AndroidUiautomator2Driver();
                     // await driver.createSession(getURL("http://localhost:4723/wd/hub"), capa);
-
                     driver = new AndroidUiautomator2Driver("http://localhost:4723/wd/hub"), capa);
                     driver.setFileDetector(new LocalFileDetector())
                     sleep(1000)
@@ -134,46 +130,30 @@ class GebMobileDriverFactory {
                     }
                 }
             }
-
-
             // iOS:
-            else{
-                log.info("Create Appium IOSDriver ")
+            else {
+                // Appium use XCUITest Driver instead of UIAutomation Driver now, for apps of iOS 9.3 and up:
+                // if (capa.getCapability("automationName") == "XCUITest") {
+
+                //     log.info("Create Appium XCUITest-Driver")
+
+                //     driver = new AndroidUiautomator2Driver("http://localhost:4723/wd/hub"), capa);
+                //     driver.setFileDetector(new LocalFileDetector())
+                //     sleep(1000)
+                //     log.info("Driver created: $driver.capabilities")
+                //     return driver
+                // }
+                log.info("Create Appium IOSDriver")
                 driver = new IOSDriver(getURL("http://localhost:4723/wd/hub"), capa)
                 driver.setFileDetector(new LocalFileDetector())
+                sleep(1000)
+                log.info("Driver created: $driver.capabilities")
                 return driver
-
             }
-
-            if (!driver) throw new RuntimeException("Appiumdriver could not be started")
+            if (!driver) throw new RuntimeException("Appium Driver could not be started")
         } 
 
-
-        else if (useIosDriver()) {
-            DesiredCapabilities capa = new DesiredCapabilities()
-            capa.setCapability(IOSCapabilities.BUNDLE_NAME, appPackage())
-            if (appVersion())
-                capa.setCapability(IOSCapabilities.BUNDLE_VERSION, appVersion())
-            capa.setCapability(IOSCapabilities.DEVICE, DeviceType.iphone)
-
-            System.properties.each { String k, v ->
-                def m = k =~ /^iosdriver_(.*)$/
-                if (m.matches()) {
-                    log.info "setting ios property: $k , $v"
-                    capa.setCapability(m[0][1], v)
-                }
-            }
-
-            IOSCapabilities iCapa = new IOSCapabilities(capa.asMap())
-
-            new RemoteIOSDriver(getURL("http://localhost:5555/wd/hub/"), iCapa)
-            //new RemoteWebDriver(getURL("http://localhost:5555/wd/hub/"), capa)
-
-        } 
-
-
-
-
+// Selenium:
         else if (System.properties.framework == FRAMEWORK_SELENIUM) {
             DesiredCapabilities capa = DesiredCapabilities.firefox()
             System.properties.each { String k, v ->
@@ -188,11 +168,9 @@ class GebMobileDriverFactory {
             return selenium
         } 
 
-
-
-
+// Not able to identify:
         else {
-            throw new Exception("Set Systemproperty 'framework' to selendroid or appium")
+            throw new Exception("Set Systemproperty 'framework' to Selenium or Appium")
         }
 
     }
@@ -200,15 +178,6 @@ class GebMobileDriverFactory {
     public static boolean useAppium() {
         System.properties.framework == FRAMEWORK_APPIUM
     }
-
-    public static boolean useSelendroid() {
-        System.properties.framework == FRAMEWORK_SELENDRIOD
-    }
-
-    public static boolean useIosDriver() {
-        System.properties.framework == FRAMEWORK_IOSDRIVER
-    }
-
     public static String appPackage() {
         System.properties.'appUT.package'
     }
@@ -232,14 +201,7 @@ class GebMobileDriverFactory {
         }
     }
 
-    /**
-     * Convinient Method to set Framework and Capabilities for ...
-     * @param map
-     */
-    public static void setIosDriver(def map) {
-        setFrameWork(FRAMEWORK_IOSDRIVER, map)
-    }
-
+// for now, this should not be used. User should specify the targeted capability of drivers:
     /**
      * Convinient Method to set Framework and Capabilities for ...
      * @param map
@@ -254,24 +216,11 @@ class GebMobileDriverFactory {
         setAppium(map)
     }
 
-    /**
-     * Convinient Method to set Framework and Capabilities for ...
-     * @param map
-     */
     public static void setAppiumIos(def map) {
         if (!map) map = []
         map.platformName = map.platformName ?: 'iOS'
         map.deviceName = map.deviceName ?: 'iPhone 6'
         setFrameWork(FRAMEWORK_APPIUM, map)
     }
-
-    /**
-     * Convinient Method to set Framework and Capabilities for ...
-     * @param map
-     */
-    public static void setSelendroid(def map) {
-        setFrameWork(FRAMEWORK_SELENDRIOD, map)
-    }
-
 
 }
