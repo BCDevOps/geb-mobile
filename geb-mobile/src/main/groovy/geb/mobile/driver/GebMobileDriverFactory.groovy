@@ -4,16 +4,20 @@ import groovy.util.logging.Slf4j
 import io.appium.java_client.AppiumDriver
 import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.ios.IOSDriver
-import io.selendroid.SelendroidCapabilities
-import io.selendroid.SelendroidDriver
+
+// import io.selendroid.SelendroidCapabilities
+// import io.selendroid.SelendroidDriver
+
 import org.openqa.selenium.Platform
 import org.openqa.selenium.firefox.FirefoxDriver
+
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.LocalFileDetector
 import org.openqa.selenium.remote.RemoteWebDriver
-import org.uiautomation.ios.IOSCapabilities
-import org.uiautomation.ios.client.uiamodels.impl.RemoteIOSDriver
-import org.uiautomation.ios.communication.device.DeviceType
+
+// import org.uiautomation.ios.IOSCapabilities
+// import org.uiautomation.ios.client.uiamodels.impl.RemoteIOSDriver
+// import org.uiautomation.ios.communication.device.DeviceType
 
 /**
  * Created by gmueksch on 12.08.14.
@@ -26,44 +30,29 @@ import org.uiautomation.ios.communication.device.DeviceType
 @Slf4j
 class GebMobileDriverFactory {
 
+// no selendroid:
+
+
     public static String FRAMEWORK_APPIUM = "appium"
-    public static String FRAMEWORK_SELENDRIOD = "selendroid"
-    public static String FRAMEWORK_IOSDRIVER = "iosdriver"
+    // public static String FRAMEWORK_SELENDRIOD = "selendroid"
+    // public static String FRAMEWORK_IOSDRIVER = "iosdriver"
     public static String FRAMEWORK_SELENIUM = "selenium"
 
     public static URL getURL(String url) {
-        String seleniumUrl = System.getProperty("appium.url")
-        if (seleniumUrl) return new URL(seleniumUrl)
+        String appiumUrl = System.getProperty("appium.url")
+        if (appiumUrl) return new URL(appiumUrl)
         else return new URL(url)
     }
 
     public static RemoteWebDriver createMobileDriverInstance() {
         log.info("Create Mobile Driver Instance for Framework ${System.properties.framework} ... ")
-        if (useSelendroid()) {
-            DesiredCapabilities capa
-            if (appPackage() && appVersion())
-                capa = new SelendroidCapabilities("${appPackage()}:${appVersion()}")
-            else
-                capa = DesiredCapabilities.android()
 
-            def p = ~/^selendroid_(\w+)$/
-            System.properties.each { k, v ->
-                def m = p.matcher(k)
-                if (m.matches()) {
-                    try {
-                        log.info("Setting set${m[0][1]}($v)")
-                        capa."set${m[0][1]}"(v)
-                    } catch (e) {
-                        log.info("problem setting value to config: $e.message")
-                    }
-                }
-            }
-            return new SelendroidDriver(getURL("http://localhost:4444/wd/hub"), capa)
-        } else if (useAppium()) {
+// only using appium:
+        if (useAppium()) {
             DesiredCapabilities capa = new DesiredCapabilities()
-            //set default platform to android
+            //set default platform to android:
             capa.setCapability("platformName", "Android");
-
+            // get the capa setting defined by user:
             System.properties.each { String k, v ->
                 def m = k =~ /^appium_(.*)$/
                 if (m.matches()) {
@@ -76,7 +65,11 @@ class GebMobileDriverFactory {
             if (capa.getCapability("platformName") == "Android") {
                 capa.setCapability("platform", Platform.ANDROID)
                 if( appPackage() ) capa.setCapability("appPackage", appPackage())
+
+                // set default name to Android for emulator:
                 if (!capa.getCapability("deviceName")) capa.setCapability("deviceName", "Android");
+
+
 
                 if (capa.getCapability("automationName") == "selendroid") {
                     log.info("Create SelendroidDriver for Appium, cause AutomationName is set to selendroid")
@@ -105,7 +98,13 @@ class GebMobileDriverFactory {
                         }
                     }
                 }
-            }else{
+            }
+
+
+
+
+
+            else{
                 log.info("Create Appium IOSDriver ")
                 driver = new IOSDriver(getURL("http://localhost:4723/wd/hub"), capa)
                 driver.setFileDetector(new LocalFileDetector())
@@ -113,10 +112,15 @@ class GebMobileDriverFactory {
 
             }
 
-
-
             if (!driver) throw new RuntimeException("Appiumdriver could not be started")
-        } else if (useIosDriver()) {
+        } 
+
+
+
+
+
+
+        else if (useIosDriver()) {
             DesiredCapabilities capa = new DesiredCapabilities()
             capa.setCapability(IOSCapabilities.BUNDLE_NAME, appPackage())
             if (appVersion())
@@ -136,7 +140,12 @@ class GebMobileDriverFactory {
             new RemoteIOSDriver(getURL("http://localhost:5555/wd/hub/"), iCapa)
             //new RemoteWebDriver(getURL("http://localhost:5555/wd/hub/"), capa)
 
-        } else if (System.properties.framework == FRAMEWORK_SELENIUM) {
+        } 
+
+
+
+
+        else if (System.properties.framework == FRAMEWORK_SELENIUM) {
             DesiredCapabilities capa = DesiredCapabilities.firefox()
             System.properties.each { String k, v ->
                 def m = k =~ /^selenium_(.*)$/
@@ -148,7 +157,12 @@ class GebMobileDriverFactory {
             def selenium = new RemoteWebDriver(getURL("http://localhost:4444/wd/hub/"),capa)
             selenium.setFileDetector(new LocalFileDetector())
             return selenium
-        } else {
+        } 
+
+
+
+
+        else {
             throw new Exception("Set Systemproperty 'framework' to selendroid or appium")
         }
 
