@@ -434,8 +434,6 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
         this
     }
 
-
-
     @Override
     String toString() {
         contextElements*.toString()
