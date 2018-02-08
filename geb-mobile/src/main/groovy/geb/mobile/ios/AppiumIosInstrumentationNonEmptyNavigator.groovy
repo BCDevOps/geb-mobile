@@ -109,16 +109,16 @@ class AppiumIosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNa
         input?.getAttribute("value")
     }
 
+// deprecated: https://groups.google.com/forum/#!topic/geb-dev/sS_tFJEQzVw
+    // @Override
+    // boolean isEnabled() {
+    //     return firstElement().enabled
+    // }
 
-    @Override
-    boolean isEnabled() {
-        return firstElement().enabled
-    }
-
-    @Override
-    boolean isDisplayed() {
-        return firstElement().displayed
-    }
+    // @Override
+    // boolean isDisplayed() {
+    //     return firstElement().displayed
+    // }
 
     @Override
     Navigator unique() {
