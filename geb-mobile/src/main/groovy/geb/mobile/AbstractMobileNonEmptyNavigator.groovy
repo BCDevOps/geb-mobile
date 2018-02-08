@@ -672,35 +672,38 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
         index == -1 ? elements : elements[0..<index]
     }
 
-    @Override
-    boolean isDisabled() {
-        def dis = null
-        try {
-            dis = getAttribute('disabled')
-        }catch(e){
-            log.warn("No 'disabled' attribute ")
-        }
-        if( dis == null ){
-            dis = !getAttribute('enabled')
-        }
-        return Boolean.valueOf(dis)
-    }
 
-    @Override
-    boolean isEnabled() {
-        def ena = getAttribute('enabled')
-        return Boolean.valueOf(ena)
-    }
 
-    @Override
-    boolean isReadOnly() {
-        return false
-    }
+// Deprecated: https://groups.google.com/forum/#!topic/geb-dev/sS_tFJEQzVw
+    // @Override
+    // boolean isDisabled() {
+    //     def dis = null
+    //     try {
+    //         dis = getAttribute('disabled')
+    //     }catch(e){
+    //         log.warn("No 'disabled' attribute ")
+    //     }
+    //     if( dis == null ){
+    //         dis = !getAttribute('enabled')
+    //     }
+    //     return Boolean.valueOf(dis)
+    // }
 
-    @Override
-    boolean isEditable() {
-        return true
-    }
+    // @Override
+    // boolean isEnabled() {
+    //     def ena = getAttribute('enabled')
+    //     return Boolean.valueOf(ena)
+    // }
+
+    // @Override
+    // boolean isReadOnly() {
+    //     return false
+    // }
+
+    // @Override
+    // boolean isEditable() {
+    //     return true
+    // }
 
 
 
