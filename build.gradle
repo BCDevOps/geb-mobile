@@ -63,7 +63,7 @@ subprojects {
         compile "io.appium:java-client:$appiumClientVersion"
 
         compile "org.slf4j:slf4j-api:$slf4jVersion"
-        testCompile 'org.slf4j:slf4j-simple:$slf4jVersion'
+        // testCompile 'org.slf4j:slf4j-simple:$slf4jVersion'
         compile "ch.qos.logback:logback-classic:$logbackVersion"
 
         compile "junit:junit:$junitVersion"
