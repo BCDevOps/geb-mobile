@@ -3,6 +3,7 @@ package geb.mobile.driver
 import groovy.util.logging.Slf4j
 import io.appium.java_client.AppiumDriver
 import io.appium.java_client.android.AndroidDriver
+// import io.appium.java_client.android.AndroidUiautomator2Driver
 import io.appium.java_client.ios.IOSDriver
 
 // import io.selendroid.SelendroidCapabilities
@@ -92,6 +93,8 @@ class GebMobileDriverFactory {
                 // set default name to Android for emulator:
                 if (!capa.getCapability("deviceName")) capa.setCapability("deviceName", "Android");
 
+
+/*
                 // Appium use UiAutomator2 instead of selendroid now: (https://appium.io/docs/en/drivers/android-uiautomator2/index.html)
                 // for android native apps only!
                 // here: Appium android with Espresso is coming! (https://github.com/appium/appium)
@@ -100,12 +103,13 @@ class GebMobileDriverFactory {
                     // create new seesion:
                     // driver = new AndroidUiautomator2Driver();
                     // await driver.createSession(getURL("http://localhost:4723/wd/hub"), capa);
-                    driver = new AndroidUiautomator2Driver("http://localhost:4723/wd/hub"), capa);
+                    driver = new AndroidUiautomator2Driver(getURL("http://localhost:4723/wd/hub"), capa);
                     driver.setFileDetector(new LocalFileDetector())
                     sleep(1000)
                     log.info("Driver created: $driver.capabilities")
                     return driver
                 }
+*/                
 
                 log.info("Create Appium AndroidDriver")
                 try {
