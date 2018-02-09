@@ -11,18 +11,28 @@ tasks.withType(Test) { task ->
 
 
 //*******************
+// To use selendroid and iOSDriver, use appium_automationName
 
 task AndroidAppiumBrowserStack(type: Test, dependsOn: [compileGroovy]) {
     systemProperties.put "framework", "appium"
-    systemProperties.put "appium_app", "bs://0e5728e1871f40ecdcb6aca65d312e89ffe23f56"
-    systemProperties.put "appium.url", "https://automationtestin1:mcRNFjAbC55fEvmSPsH1@hub.browserstack.com/wd/hub"
+    systemProperties.put "appium_app", "bs://1239edb3b56c9c35c78e361f6a5a788716924754"
+    systemProperties.put "appium.url", "https://shellytesting2:y8beASRQzjhXbqbXiqTx@hub.browserstack.com/wd/hub"
     systemProperties.put "appium_platformName", "Android"
     systemProperties.put "appium_deviceName", "Google Pixel"
+    systemProperties.put "appium_browserstack.debug", "true"
+
+
+
+    // systemProperties.put "appium_javascriptEnabled", "true"
+    
 
     include '**/GebMobileAutomationTestWithPagesSpec.*'
 }
 
 //uploading apps:
 task uploadAppBS(type: Exec) {
-    commandLine = ['curl', '-u', "automationtestin1:mcRNFjAbC55fEvmSPsH1", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/Users/shellyhan/Downloads/TestDemo/WikipediaSample.apk" ]
+
+    logger.info("here")
+    commandLine = ['echo', 'hihihi']
+    // commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/Users/shellyhan/Downloads/TestDemo/WikipediaSample.apk" ]
 }

@@ -11,21 +11,6 @@ import io.appium.java_client.android.AndroidElement
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
-
-
-import java.net.URL
-import java.util.List
-import java.net.MalformedURLException
-import io.appium.java_client.MobileBy
-import io.appium.java_client.android.AndroidDriver
-import io.appium.java_client.android.AndroidElement
-import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.WebDriverWait
-
-import io.appium.java_client.MobileBy
-
-
-
 /**
  * Created by gmueksch on 23.06.14.
  */
@@ -66,7 +51,6 @@ import io.appium.java_client.MobileBy
 
 
 
-
 @Slf4j
 class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigator<AndroidDriver> {
 
@@ -95,7 +79,8 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
                     log.warn("Selector $selectorString: findElementsByAndroidUIAutomator resourceId(\"$value\") : $e.message")
                     return new EmptyNavigator()
                 }
-            }else {
+            }
+            else {
                 def apk = getAppPackage()
                 if( !apk ) log.warn("for Selector $selectorString : AppPackage is emtpy, result may not be correct ")
                 try {
@@ -131,6 +116,7 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
     @Override
     Navigator unique() {
         new AndroidUIAutomatorNonEmptyNavigator(browser, contextElements.unique(false))
+        // new AndroidUIAutomatorNonEmptyNavigator(browser, contextElements)
     }
 
     @Override
@@ -220,7 +206,6 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
         } catch (e) {
             log.warn("Error selecting with UiAutomator: $e.message")
         }
-
     }
 
 
@@ -229,9 +214,13 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
         driver.execute("new UiScrollable(new UiSelector().className('android.widget.ListView')).flingBackward();",null)
     }
 
-    @Override
-    boolean isDisabled() {
-        return !super.isEnabled()
-    }
+// Deprecated: https://groups.google.com/forum/#!topic/geb-dev/sS_tFJEQzVw
+    // @Override
+    // boolean isDisabled() {
+    //     return !super.isEnabled()
+    // }
+
+
+    // ===========the methods from abstract class==================
 
 }

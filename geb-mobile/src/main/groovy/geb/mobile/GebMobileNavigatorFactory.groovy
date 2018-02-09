@@ -44,6 +44,7 @@ class GebMobileNavigatorFactory implements NavigatorFactory {
         return browser
     }
 
+    @Override
     Locator getLocator() {
         return _locator
     }

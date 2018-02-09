@@ -1,8 +1,11 @@
 package geb.mobile
 
 import geb.Browser
-// import geb.mobile.android.AndroidInstrumentationNonEmptyNavigator
+
 import geb.mobile.android.AndroidUIAutomatorNonEmptyNavigator
+
+// import geb.mobile.android.AndroidNonEmptyNavigator
+
 import geb.mobile.ios.AppiumIosInstrumentationNonEmptyNavigator
 import geb.mobile.ios.IosInstrumentationNonEmptyNavigator
 import geb.navigator.EmptyNavigator
@@ -62,7 +65,6 @@ class GebMobileInnerNavigatorFactory implements InnerNavigatorFactory {
                                                     'appium:CHROMIUM'  : AndroidUIAutomatorNonEmptyNavigator,
                                                     'appium:CHROME'    : AndroidUIAutomatorNonEmptyNavigator
     ]
-
 
     Map<Browser, Class> _innerNavigators = [:]
 
@@ -131,6 +133,7 @@ class GebMobileInnerNavigatorFactory implements InnerNavigatorFactory {
      * @param elements The elements to back the navigator
      * @return The newly created navigator
      */
+    @Override
     Navigator createNavigator(Browser browser, List<WebElement> elements) {
         if (!elements) return new EmptyNavigator(browser)
         return figureCorrectInnerNavigator(browser).newInstance(browser, elements)

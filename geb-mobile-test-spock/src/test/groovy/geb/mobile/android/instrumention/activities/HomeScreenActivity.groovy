@@ -1,4 +1,5 @@
 package geb.mobile.android.instrumention.activities
+
 import geb.mobile.android.AndroidBaseActivity
 
 import io.appium.java_client.MobileBy
@@ -10,9 +11,16 @@ import org.openqa.selenium.support.ui.WebDriverWait
 class HomeScreenActivity extends AndroidBaseActivity {
 
     static content = {
-        searchButton {$("Search Wikipedia")}
 
-        searchText {$("#search_src_text")}
+
+
+    	a {return driver.findElementsByClassName("android.widget.TextView")}
+
+
+
+        // searchButton {$("Search Wikipedia")}
+
+        // searchText {$("#search_src_text")}
 
         resultList {$("android.widget.TextView")}
     }
