@@ -6,29 +6,12 @@ import io.appium.java_client.android.AndroidDriver
 // import io.appium.java_client.android.AndroidUiautomator2Driver
 import io.appium.java_client.ios.IOSDriver
 
-// import io.selendroid.SelendroidCapabilities
-// import io.selendroid.SelendroidDriver
 
 import org.openqa.selenium.Platform
-import org.openqa.selenium.firefox.FirefoxDriver
 
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.LocalFileDetector
 import org.openqa.selenium.remote.RemoteWebDriver
-
-// import org.uiautomation.ios.IOSCapabilities
-// import org.uiautomation.ios.client.uiamodels.impl.RemoteIOSDriver
-// import org.uiautomation.ios.communication.device.DeviceType
-
-/**
- * Created by gmueksch on 12.08.14.
- * Based on the your System property settings this class creates the remote driver impl
- * to connect to your selenium server
- * is used in the GebConfig.groovy by geb or directly if you prefere writing old style unit tests
- * TODO: automatically figure out what type of server is running, could be done with json requests
- * TODO: refactor the if/then construct
- */
-
 
 
 /*
@@ -64,8 +47,10 @@ class GebMobileDriverFactory {
 
     public static URL getURL(String url) {
         String appiumUrl = System.getProperty("appium.url")
-        if (appiumUrl) return new URL(appiumUrl)
-        else return new URL(url)
+        return new URL(appiumUrl)
+        // here
+        // if (appiumUrl) return new URL(appiumUrl)
+        // else return new URL(url)
     }
 
     public static RemoteWebDriver createMobileDriverInstance() {
