@@ -13,7 +13,7 @@ import org.openqa.selenium.WebElement
  * Created by gmueksch on 23.06.14.
  */
 @Slf4j
-class AppiumIosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNavigator<IOSDriver> {
+abstract class AppiumIosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNavigator<IOSDriver> {
 
     AppiumIosInstrumentationNonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
         super(browser,contextElements)
@@ -120,8 +120,8 @@ class AppiumIosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNa
     //     return firstElement().displayed
     // }
 
-    @Override
-    Navigator unique() {
-        new AppiumIosInstrumentationNonEmptyNavigator(browser, contextElements.unique(false))
-    }
+    // @Override
+    // Navigator unique() {
+    //     new AppiumIosInstrumentationNonEmptyNavigator(browser, contextElements.unique(false))
+    // }
 }

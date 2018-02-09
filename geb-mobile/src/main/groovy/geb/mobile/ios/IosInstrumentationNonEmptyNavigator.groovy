@@ -13,7 +13,7 @@ import org.uiautomation.ios.client.uiamodels.impl.RemoteIOSDriver
  * Created by gmueksch on 23.06.14.
  */
 @Slf4j
-class IosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNavigator<RemoteIOSDriver> {
+abstract class IosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNavigator<RemoteIOSDriver> {
 
     IosInstrumentationNonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
         super(browser,contextElements)
@@ -72,8 +72,8 @@ class IosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
         }
     }
 
-    @Override
-    Navigator unique() {
-        new IosInstrumentationNonEmptyNavigator(browser, contextElements.unique(false))
-    }
+    // @Override
+    // Navigator unique() {
+    //     new IosInstrumentationNonEmptyNavigator(browser, contextElements.unique(false))
+    // }
 }
