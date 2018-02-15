@@ -9,30 +9,66 @@ tasks.withType(Test) { task ->
     outputs.upToDateWhen { false }
 }
 
+task androidOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
+    /**
+     * UiAutomator2 capa minimum (with jdk1.8.0)
+     *
+     * automationName - UiAutomator2
+     * platformName - Android
+     * platformVersion
+     * deviceName
+     * app
+     * browserName - Chrome/Chromium (for webview)
+     *
+     **/
 
-//*******************
-// To use selendroid and iOSDriver, use appium_automationName
-
-task AndroidAppiumBrowserStack(type: Test, dependsOn: [compileGroovy]) {
     systemProperties.put "framework", "appium"
-    systemProperties.put "appium_app", "bs://1239edb3b56c9c35c78e361f6a5a788716924754"
-    systemProperties.put "appium.url", "https://shellytesting2:y8beASRQzjhXbqbXiqTx@hub.browserstack.com/wd/hub"
+    systemProperties.put "appium_app", "bs://6923b20d35af5655b0d622f1c4770311ea0818f9"
+    systemProperties.put "selenium.url", "http://shellytesting2:y8beASRQzjhXbqbXiqTx@hub.browserstack.com/wd/hub"
     systemProperties.put "appium_platformName", "Android"
     systemProperties.put "appium_deviceName", "Google Pixel"
-    systemProperties.put "appium_browserstack.debug", "true"
-
-
-
-    // systemProperties.put "appium_javascriptEnabled", "true"
-    
+    systemProperties.put "appium_platformVersion", "7.1"
 
     include '**/GebMobileAutomationTestWithPagesSpec.*'
 }
 
-//uploading apps:
-task uploadAppBS(type: Exec) {
 
-    logger.info("here")
-    commandLine = ['echo', 'hihihi']
-    // commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/Users/shellyhan/Downloads/TestDemo/WikipediaSample.apk" ]
+task iOSOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
+    /**
+     * UIAutomation capa minimum (for iOS 9.3 -)
+     *
+     * platformName - iOS
+     * platformVersion
+     * deviceName
+     * app
+     * browserName - Safari (for webview)
+     *
+     *
+     * XCUITest capa minimum (for iOS 9.3 or higher)
+     *
+     * automationName - XCUITest
+     * platformName - iOS
+     * platformVersion
+     * deviceName
+     * app
+     **/
+
+    systemProperties.put "framework", "appium"
+    systemProperties.put "appium_app", "https://s3.amazonaws.com/appium/TestApp8.4.app.zip"
+    systemProperties.put "selenium.url", "http://TestingBDD:78a08cd2-a8a0-45c6-895c-ec241e6452fa@ondemand.saucelabs.com:80/wd/hub"
+    systemProperties.put "appium_platformName", "iOS"
+    systemProperties.put "appium_deviceName", "iPhone 6"
+    systemProperties.put "appium_platformVersion", "8.4"
+
+
+    include '**/UICatalogAppSpec.*'
+}
+
+
+task uploadAppToBrowserStack(type: Exec) {
+//    Upload Android app:
+//    commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/Users/shellyhan/Downloads/TestDemo/WikipediaSample.apk"]
+
+//Upload iOS app:
+    commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/Users/shellyhan/Downloads/TestDemo/WordPressSample.ipa"]
 }
