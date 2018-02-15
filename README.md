@@ -3,7 +3,7 @@
 ---
 
 ## Under Development
-+ This project is still under development and is used in our automation. So all functions are implemented
++ WIP
 ---
 
 ## TODO
