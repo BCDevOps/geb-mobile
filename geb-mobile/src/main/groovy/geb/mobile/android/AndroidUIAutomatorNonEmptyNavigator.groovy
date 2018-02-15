@@ -8,6 +8,8 @@ import groovy.util.logging.Slf4j
 import io.appium.java_client.MobileElement
 import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.android.AndroidElement
+import org.apache.commons.lang3.NotImplementedException
+import org.apache.http.MethodNotSupportedException
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 
@@ -16,46 +18,28 @@ import org.openqa.selenium.WebElement
  */
 
 
-
-
-// Appium find by:
-// 1. Accessibility ID:
-// 1.1 resource-id for iOS
-// 1.2 content-desc for android
-// 
-// 2. Class name
-// 3. ID / Name
-// 4. XPath
-// 5. From the platform: AndroidUIAutomator / IOSUIAutomation
-
-
-
-// String all,key,value
-//         if (selectorString.startsWith("#")) {
-//             key = "id"
-//             value = selectorString.substring(1)
-//         } else {
-//             def m = pat.matcher(selectorString)
-//             if (m.matches()) {
-//                 (all,key,value)=m[0]
-//                 log.debug "Match for ${key}='${value}' in $selectorString"
-//             }
-//         }
-//         if( key && value ) {
-//             log.debug("Key:$key , Value: $value")
-//             navigatorFor driver.findElements(By."$key"(value))
-//         }else{
-//             log.warn("Ether key '$key' or value '$value' is not filled")
-//             new EmptyNavigator()
-//         }
-
-
+/**
+ * Locator strategies:
+ *
+ * From WebDriver:
+ *      className           -- full name of the UIAutomator2 class (e.g.: android.widget.TextView)
+ *      xpath               -- from XML page source
+ *
+ *  From the platform specific:
+ *      .findElementsByAndroidUIAutomator()     -- using the Android UiSelector class
+ *
+ *  From general:
+ *      accessibility id    -- the content-desc attribute
+ *      id                  -- resource-id
+ *      name
+ *
+ **/
 
 @Slf4j
-class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigator<AndroidDriver> {
+class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigator<AndroidDriver<AndroidElement>> {
 
     AndroidUIAutomatorNonEmptyNavigator(Browser browser, Collection<? extends MobileElement> contextElements) {
-        super(browser,contextElements)
+        super(browser, contextElements)
     }
 
     private String getAppPackage() {
@@ -65,11 +49,23 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
     @Override
     Navigator find(String selectorString) {
         log.debug "Selector: $selectorString"
-// XPath:
+
+        //XPath:
         if (selectorString.startsWith("//")) {
             return navigatorFor(driver.findElements(By.xpath(selectorString)))
         }
-// ID:
+
+        //Accessibility ID:
+        if (selectorString.startsWith("~")) {
+            String value = selectorString.substring(1)
+            try{
+                return navigatorFor(driver.findElementsByAccessibilityId(value))
+            }catch(e){
+                log.warn("Selector $selectorString: findElementByAccessibilityId (\"$value\") : $e.message")
+                return new EmptyNavigator()
+            }
+        }
+        //Resource ID:
         if (selectorString.startsWith("#")) {
             String value = selectorString.substring(1)
             if( value.indexOf(':')>0 ) {
@@ -79,8 +75,7 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
                     log.warn("Selector $selectorString: findElementsByAndroidUIAutomator resourceId(\"$value\") : $e.message")
                     return new EmptyNavigator()
                 }
-            }
-            else {
+            }else {
                 def apk = getAppPackage()
                 if( !apk ) log.warn("for Selector $selectorString : AppPackage is emtpy, result may not be correct ")
                 try {
@@ -95,34 +90,32 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
                 }
             }
         }
-// WEB_VIEW:
-        else if ( selectorString.startsWith(".") ){
-            log.debug "At web view with: $selectorString"
-            return navigatorFor(driver.findElementsByCssSelector(selectorString))
-        } 
-// Class Name:
+        //This works only on WEB_VIEW
+        else if( selectorString.startsWith(".") ){
+            return navigatorFor(driver.findElementsByCssSelector(selectorString) )
+        }
+        // Class Name:
         else if (selectorString.indexOf('.') > 1) {
             log.debug "Using Class Name with: $selectorString"
             return navigatorFor(driver.findElementsByClassName(selectorString))
         }
-// Accessibility ID (content_Desc):
         else {
-            log.debug "Using Accessibility ID with: $selectorString"
-            return navigatorFor(driver.findElementsByAccessibilityId(selectorString))
+            selectorString = selectorString.replaceAll("'", '\"')
+            log.debug "Using UIAutomator with: $selectorString"
+            navigatorFor(driver.findElementsByAndroidUIAutomator(selectorString))
         }
+
     }
 
 
     @Override
     Navigator unique() {
         new AndroidUIAutomatorNonEmptyNavigator(browser, contextElements.unique(false))
-        // new AndroidUIAutomatorNonEmptyNavigator(browser, contextElements)
     }
 
-    @Override
-    protected getInputValue(WebElement input) {
+    protected getInputValue(MobileElement input) {
         def value
-        def tagName = tag()
+        def tagName = input.tagName
 
         if (tagName == "android.widget.Spinner") {
             if( AndroidHelper.isOnListView(driver) )
@@ -139,9 +132,9 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
     }
 
     @Override
-    void setInputValue(WebElement input, Object value) {
+    void setInputValue(MobileElement input, Object value) {
 
-        def tagName = tag()
+        def tagName = input.tagName
         log.debug("setInputValue: $input, $tagName")
         if (tagName == "android.widget.Spinner") {
             if (getInputValue(input) == value) return
@@ -155,7 +148,7 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
             } else if (checked && !value ) {
                 input.click()
             }
-        }else {
+        }else { //to send to text field through a keyborad:
             //TODO: hideKeyboard after sendKeys
             //TODO: clear Copy/Paste 
 //            input.clear()
@@ -206,6 +199,7 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
         } catch (e) {
             log.warn("Error selecting with UiAutomator: $e.message")
         }
+
     }
 
 
@@ -214,13 +208,13 @@ class AndroidUIAutomatorNonEmptyNavigator extends AbstractMobileNonEmptyNavigato
         driver.execute("new UiScrollable(new UiSelector().className('android.widget.ListView')).flingBackward();",null)
     }
 
-// Deprecated: https://groups.google.com/forum/#!topic/geb-dev/sS_tFJEQzVw
-    // @Override
-    // boolean isDisabled() {
-    //     return !super.isEnabled()
-    // }
+    @Override
+    boolean isDisabled() {
+        return !super.isEnabled()
+    }
 
-
-    // ===========the methods from abstract class==================
-
+    @Override
+    Navigator leftShift(Object value) {
+        throw new NotImplementedException()
+    }
 }
