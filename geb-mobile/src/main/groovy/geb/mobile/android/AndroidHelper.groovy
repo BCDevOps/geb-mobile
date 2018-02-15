@@ -13,6 +13,14 @@ import org.openqa.selenium.interactions.Actions
  * Provides some basic Androrid
  * Created by gmueksch on 21/01/15.
  */
+
+/**
+ * TODO:
+ * keycodes
+ * swipe
+ *
+ */
+
 @Slf4j
 class AndroidHelper {
 
@@ -23,29 +31,29 @@ class AndroidHelper {
     }
 
     void back() {
-        if (driver instanceof AndroidDriver) androidDriverBackButton(driver)
-        else new Actions(driver).sendKeys(SelendroidKeys.BACK).perform()
+        driver.pressKeyCode(AndroidKeyCode.BACK)
     }
     void menu() {
-        if( driver instanceof AndroidDriver ) driver.pressKeyCode(AndroidKeyCode.MENU)
-        else new Actions(driver).sendKeys(SelendroidKeys.MENU).perform()
+        driver.pressKeyCode(AndroidKeyCode.MENU)
     }
     void home() {
-        if( driver instanceof AndroidDriver ) androidDriverHomeButton(driver)
-        else new Actions(driver).sendKeys(SelendroidKeys.ANDROID_HOME).perform()
+        driver.pressKeyCode(AndroidKeyCode.HOME)
+    }
+    void recents() {
+        driver.pressKeyCode(AndroidKeyCode.KEYCODE_APP_SWITCH)
     }
 
     /**
      * static method for usage in Navigator
      * @param driver
      */
-    public static void androidDriverBackButton(AndroidDriver driver){
-        driver.pressKeyCode(AndroidKeyCode.BACK) //  pressKeyCode(AndroidKeyCode.BACK);
-    }
-
-    public static void androidDriverHomeButton(AndroidDriver driver){
-        driver.pressKeyCode(AndroidKeyCode.HOME)
-    }
+//    public static void androidDriverBackButton(AndroidDriver driver){
+//        driver.pressKeyCode(AndroidKeyCode.BACK) //  pressKeyCode(AndroidKeyCode.BACK);
+//    }
+//
+//    public static void androidDriverHomeButton(AndroidDriver driver){
+//        driver.pressKeyCode(AndroidKeyCode.HOME)
+//    }
 
     public String getMessage(){
         browser.find("#android:id/message").text()
