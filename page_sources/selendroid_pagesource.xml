@@ -27,8 +27,8 @@
                                      ref="4d549672-2f33-15f2-f33a-f0de46aa9ab8" id="startUserRegistration"
                                      shown="true"/>
                     </LinearLayout>
-                    <EditText name="my_text_fieldCD" label="" value="" ref="4196bca4-edca-55dd-c1c0-db546fbc41fa"
-                              id="my_text_field" shown="true"/>
+                    <!--<EditText name="my_text_fieldCD" label="" value="" ref="4196bca4-edca-55dd-c1c0-db546fbc41fa"-->
+                              <!--id="my_text_field" shown="true"/>-->
                     <LinearLayout name="imageViewCD" label="" value="" ref="325c862e-90f6-7cc2-5596-87665cff26e4"
                                   id="lastElementRow" shown="true">
                         <Button name="waitingButtonTestCD" label="" value="Show Progress Bar for a while"
