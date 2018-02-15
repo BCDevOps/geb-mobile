@@ -47,13 +47,6 @@ class AndroidHelper {
      * static method for usage in Navigator
      * @param driver
      */
-//    public static void androidDriverBackButton(AndroidDriver driver){
-//        driver.pressKeyCode(AndroidKeyCode.BACK) //  pressKeyCode(AndroidKeyCode.BACK);
-//    }
-//
-//    public static void androidDriverHomeButton(AndroidDriver driver){
-//        driver.pressKeyCode(AndroidKeyCode.HOME)
-//    }
 
     public String getMessage(){
         browser.find("#android:id/message").text()
@@ -198,10 +191,10 @@ class AndroidHelper {
     public static boolean isOnListView(AndroidDriver driver){
         driver.findElementsByXPath("//android.widget.FrameLayout/android.widget.ListView").size()==1
     }
-
-    public static boolean closeListView(AndroidDriver driver){
-        if( isOnListView(driver) )
-            androidDriverBackButton(driver)
-    }
+//Use BACK() for closing elements:
+//    public static boolean closeListView(AndroidDriver driver){
+//        if( isOnListView(driver) )
+//            androidDriverBackButton(driver)
+//    }
 
 }
