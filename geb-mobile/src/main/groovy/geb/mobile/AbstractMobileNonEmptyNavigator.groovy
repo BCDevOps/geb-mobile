@@ -2,19 +2,20 @@ package geb.mobile
 
 import geb.Browser
 import geb.Page
-import geb.waiting.Wait
 import geb.error.UndefinedAtCheckerException
 import geb.error.UnexpectedPageException
 import geb.navigator.AbstractNavigator
+import geb.navigator.BasicLocator
 import geb.navigator.EmptyNavigator
 import geb.navigator.Navigator
 import geb.navigator.SelectFactory
 import geb.textmatching.TextMatcher
+import geb.waiting.Wait
 import geb.waiting.WaitTimeoutException
 import groovy.util.logging.Slf4j
+import io.appium.java_client.MobileElement
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.remote.RemoteWebElement
 import sun.reflect.generics.reflectiveObjects.NotImplementedException
 
 import java.util.regex.Pattern
@@ -27,20 +28,20 @@ import static java.util.Collections.EMPTY_LIST
 @Slf4j
 abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
 
-    protected final List<WebElement> contextElements
+    protected final List<MobileElement> contextElements
 
     private Map _props = [:] as Map
 
     T driver
 
-    AbstractMobileNonEmptyNavigator(Browser browser, Collection<? extends WebElement> contextElements) {
-        super(browser)
+    AbstractMobileNonEmptyNavigator(Browser browser, Collection<? extends MobileElement> contextElements) {
+        super(browser, new AbstractMobileBasicLocator())
         this.contextElements = contextElements.toList().asImmutable()
         //this._props = firstElement().properties
         this.driver = (T)browser.driver
     }
 
-    protected Navigator navigatorFor(Collection<WebElement> contextElements) {
+    protected Navigator navigatorFor(Collection<MobileElement> contextElements) {
         browser.navigatorFactory.createFromWebElements(contextElements)
     }
 
@@ -57,91 +58,14 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     }
 
     @Override
-    Navigator find(Map<String, Object> predicates, String selectorString) {
-        // selector = optimizeSelector(selectorString, predicates)
-        // if (selector) {
-        //     find(selector).filter(predicates)
-        // } else {
-        //     find(predicates)
-        // }
-
-        throw new NotImplementedException("no implmented")
+    Navigator find(Map<String, Object> predicates, String selector) {
+        selector = optimizeSelector(selector, predicates)
+        if (selector) {
+            find(selector).filter(predicates)
+        } else {
+            find(predicates)
+        }
     }
-
-    @Override
-    Navigator find(Map<String, Object> predicates) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(String selectorString) {
-        // find(selectorString)
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(String selectorString, int index) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, int index) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, Range<Integer> range) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, String selectorString, int index) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, String selectorString, Range<Integer> range) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(String selectorString, Range<Integer> range) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, By bySelector) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, By bySelector, int index) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(Map<String, Object> predicates, By bySelector, Range<Integer> range) {
-        throw new NotImplementedException("no implmented")
-    }
-
-
-    @Override
-    Navigator find(By bySelector) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(By bySelector, int index) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    @Override
-    Navigator find(By bySelector, Range<Integer> range) {
-        throw new NotImplementedException("no implmented")
-    }
-
-    // --------------------------
-
 
     @Override
     Navigator filter(String selectorString) {
@@ -242,16 +166,6 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     }
 
     @Override
-    Navigator next(Map<String, Object> attributes) {
-        throw new NotImplementedException("no attributes yet")
-    }
-
-    @Override
-    Navigator next(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no attributes yet")
-    }
-
-    @Override
     Navigator nextAll() {
         throw new NotImplementedException("no next by xpath on selendroid elements yet")
 //        navigatorFor collectElements {
@@ -268,32 +182,12 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     }
 
     @Override
-    Navigator nextAll(Map<String, Object> attributes) {
-        throw new NotImplementedException("no attributes yet")
-    }
-
-    @Override
-    Navigator nextAll(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no attributes yet")
-    }
-
-    @Override
     Navigator nextUntil(String selectorString) {
         throw new NotImplementedException("no next by xpath on selendroid elements yet")
 //        navigatorFor collectElements { element ->
 //            def siblings = element.findElements(By.xpath("following-sibling::*"))
 //            collectUntil(siblings, selectorString)
 //        }
-    }
-
-    @Override
-    Navigator nextUntil(Map<String, Object> attributes) {
-        throw new NotImplementedException("no attributes yet")
-    }
-
-    @Override
-    Navigator nextUntil(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no attributes yet")
     }
 
     @Override
@@ -315,16 +209,6 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     }
 
     @Override
-    Navigator previous(Map<String, Object> attributes) {
-        throw new NotImplementedException("no attributes yet")
-    }
-
-    @Override
-    Navigator previous(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no attributes yet")
-    }
-
-    @Override
     Navigator prevAll() {
         throw new NotImplementedException("no previous by xpath on selendroid elements yet")
 //        navigatorFor collectElements {
@@ -341,38 +225,12 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     }
 
     @Override
-    Navigator prevAll(Map<String, Object> attributes) {
-        throw new NotImplementedException("no previous by xpath on selendroid elements yet")
-//        navigatorFor collectElements {
-//            it.findElements(By.xpath("preceding-sibling::*"))
-//        }
-    }
-
-    @Override
-    Navigator prevAll(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no previous by xpath on selendroid elements yet")
-//        navigatorFor collectElements {
-//            it.findElements(By.xpath("preceding-sibling::*"))
-//        }
-    }
-
-    @Override
     Navigator prevUntil(String selectorString) {
         throw new NotImplementedException("no previous by xpath on selendroid elements yet")
 //        navigatorFor collectElements { element ->
 //            def siblings = element.findElements(By.xpath("preceding-sibling::*")).reverse()
 //            collectUntil(siblings, selectorString)
 //        }
-    }
-
-    @Override
-    Navigator prevUntil(Map<String, Object> attributes) {
-        throw new NotImplementedException("no previous by xpath on selendroid elements yet")
-    }
-
-    @Override
-    Navigator prevUntil(Map<String, Object> attributes, String selector) {
-        throw new NotImplementedException("no previous by xpath on selendroid elements yet")
     }
 
     @Override
@@ -385,16 +243,6 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     @Override
     Navigator parent(String selectorString) {
         parent().filter(selectorString)
-    }
-
-    @Override
-    Navigator parent(Map<String, Object> attributes) {
-        throw new NotImplementedException("no attributes enabled")
-    }
-
-    @Override
-    Navigator parent(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no attributes enabled")
     }
 
     @Override
@@ -414,31 +262,11 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     }
 
     @Override
-    Navigator parents(Map<String, Object> attributes) {
-        throw new NotImplementedException("no attributes enabled")
-    }
-
-    @Override
-    Navigator parents(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no attributes enabled")
-    }
-
-    @Override
     Navigator parentsUntil(String selectorString) {
         navigatorFor collectElements { element ->
             def ancestors = element.findElements(By.xpath("ancestor::*")).reverse()
             collectUntil(ancestors, selectorString)
         }
-    }
-
-    @Override
-    Navigator parentsUntil(Map<String, Object> attributes) {
-        throw new NotImplementedException("no attributes enabled")
-    }
-
-    @Override
-    Navigator parentsUntil(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no attributes enabled")
     }
 
     @Override
@@ -448,16 +276,6 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
 //            def parents = it.findElements(By.xpath("ancestor::*")).reverse()
 //            parents.find { CssSelector.matches(it, selectorString) }
 //        }
-    }
-
-    @Override
-    Navigator closest(Map<String, Object> attributes) {
-        throw new NotImplementedException("no css on selendroid elements yet")
-    }
-
-    @Override
-    Navigator closest(Map<String, Object> attributes, String selector) {
-        throw new NotImplementedException("no css on selendroid elements yet")
     }
 
     @Override
@@ -473,17 +291,6 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     }
 
     @Override
-    Navigator children(Map<String, Object> attributes) {
-        sthrow new NotImplementedException("no mapping attributes yet")
-    }
-
-
-    @Override
-    Navigator children(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no mapping attributes yet")
-    }
-
-    @Override
     Navigator siblings() {
         navigatorFor collectElements {
             it.findElements(By.xpath("preceding-sibling::*")) + it.findElements(By.xpath("following-sibling::*"))
@@ -493,18 +300,6 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     @Override
     Navigator siblings(String selectorString) {
         siblings().filter(selectorString)
-    }
-
-
-    @Override
-    Navigator siblings(Map<String, Object> attributes) {
-        sthrow new NotImplementedException("no mapping attributes yet")
-    }
-
-
-    @Override
-    Navigator siblings(Map<String, Object> attributes, String selectorString) {
-        throw new NotImplementedException("no mapping attributes yet")
     }
 
     @Override
@@ -564,14 +359,6 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     }
 
     @Override
-    Navigator leftShift(value) {
-        contextElements.each {
-            it.sendKeys value
-        }
-        this
-    }
-
-    @Override
     Navigator click() {
         contextElements.first().click()
         this
@@ -599,62 +386,12 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
         this
     }
 
-
     @Override
-    Navigator click(Page pageInstance) {
-        throw new NotImplementedException("page instance not clickable")
-    }
-
-    @Override
-    Navigator click(Class<? extends Page> pageClass, Wait wait) {
+    Navigator click(List potentialPageClasses) {
         click()
-        browser.page(pageClass)
-        def at = false
-        def error = null
-        try {
-            at = browser.verifyAt()
-        } catch (AssertionError e) {
-            error = e
-        } catch (WaitTimeoutException e) {
-            error = e
-        } catch (UndefinedAtCheckerException e) {
-            at = true
-        } finally {
-            if (!at) {
-                throw new UnexpectedPageException(pageClass, error)
-            }
-        }
+        browser.page(*potentialPageClasses)
         this
     }
-
-
-    @Override
-    Navigator click(Page pageInstance, Wait wait) {
-        throw new NotImplementedException("page instance not clickable")
-    }
-
-    @Override
-    Navigator click(List potentialPages) {
-        click()
-        browser.page(*potentialPages)
-        this
-    }
-
-    @Override
-    Navigator click(List potentialPages, Wait wait) {
-        click()
-        browser.page(*potentialPages)
-        this
-    }
-
-
-// deprecated:
-    // @Override
-    // Navigator click(List<Class<? extends Page>> potentialPageClasses) {
-    //     click()
-    //     browser.page(*potentialPageClasses)
-    //     this
-    // }
 
     @Override
     int size() {
@@ -664,13 +401,6 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     @Override
     boolean isEmpty() {
         size() == 0
-    }
-
-    @Override
-    boolean isFocused() {
-        // here: not implemented, will return true
-        // this == TargetLocator.activeElement
-        true
     }
 
     @Override
@@ -697,6 +427,8 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
     Navigator verifyNotEmpty() {
         this
     }
+
+
 
     @Override
     String toString() {
@@ -802,7 +534,7 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
         actualValue.any { matcher.matches(it) }
     }
 
-    protected getInputValues(Collection<WebElement> inputs) {
+    protected getInputValues(Collection<MobileElement> inputs) {
         def values = []
         inputs.each { WebElement input ->
             def value = getInputValue(input)
@@ -811,23 +543,10 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
         return values.size() < 2 ? values[0] : values
     }
 
-    protected getInputValue(WebElement input) {
-        def value
-        def tagName = tag()
 
-        if (tagName == "android.widget.Spinner") {
-            value = input?.findElementByAndroidUIAutomator("new UiSelector().enabled(true)").getText()
-        } else if (tagName == "android.widget.CheckBox") {
-            value = input.getAttribute("checked")
-        } else {
-            value = input.getText()
-        }
-        log.debug("inputValue for $tagName : $value ")
-        value
-    }
 
-    protected void setInputValues(Collection<WebElement> inputs, value) {
-        inputs.each { WebElement input ->
+    protected void setInputValues(Collection<MobileElement> inputs, value) {
+        inputs.each { MobileElement input ->
             setInputValue(input, value)
         }
     }
@@ -837,9 +556,9 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
      * @param input
      * @param value
      */
-    abstract void setInputValue(WebElement input, value) ;
+    abstract void setInputValue(MobileElement input, value) ;
 
-    protected getValue(WebElement input) {
+    protected getValue(MobileElement input) {
         input?.getAttribute("value")
     }
 
@@ -934,39 +653,172 @@ abstract class AbstractMobileNonEmptyNavigator<T> extends AbstractNavigator {
         index == -1 ? elements : elements[0..<index]
     }
 
+    boolean isDisabled() {
+        def dis = null
+        try {
+            dis = getAttribute('disabled')
+        }catch(e){
+            log.warn("No 'disabled' attribute ")
+        }
+        if( dis == null ){
+            dis = !getAttribute('enabled')
+        }
+        return Boolean.valueOf(dis)
+    }
+
+    boolean isEnabled() {
+        def ena = getAttribute('enabled')
+        return Boolean.valueOf(ena)
+    }
 
 
-// Deprecated: https://groups.google.com/forum/#!topic/geb-dev/sS_tFJEQzVw
-    // @Override
-    // boolean isDisabled() {
-    //     def dis = null
-    //     try {
-    //         dis = getAttribute('disabled')
-    //     }catch(e){
-    //         log.warn("No 'disabled' attribute ")
-    //     }
-    //     if( dis == null ){
-    //         dis = !getAttribute('enabled')
-    //     }
-    //     return Boolean.valueOf(dis)
-    // }
+    @Override
+    Navigator next(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
 
-    // @Override
-    // boolean isEnabled() {
-    //     def ena = getAttribute('enabled')
-    //     return Boolean.valueOf(ena)
-    // }
+    @Override
+    Navigator next(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
 
-    // @Override
-    // boolean isReadOnly() {
-    //     return false
-    // }
+    @Override
+    Navigator nextAll(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
 
-    // @Override
-    // boolean isEditable() {
-    //     return true
-    // }
+    @Override
+    Navigator nextAll(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
 
+    @Override
+    Navigator nextUntil(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
 
+    @Override
+    Navigator nextUntil(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
 
+    @Override
+    Navigator previous(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator previous(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator prevAll(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator prevAll(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator prevUntil(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator prevUntil(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator parent(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator parent(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator parents(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator parents(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator parentsUntil(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator parentsUntil(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator closest(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator closest(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator children(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator children(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator siblings(Map<String, Object> attributes) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator siblings(Map<String, Object> attributes, String selector) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator click(Page pageInstance) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator click(Class<? extends Page> pageClass, Wait wait) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator click(Page pageInstance, Wait wait) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator click(List potentialPages, Wait wait) {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    Navigator unique() {
+        throw new NotImplementedException()
+    }
+
+    @Override
+    boolean isFocused() {
+        return false
+    }
 }

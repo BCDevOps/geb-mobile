@@ -4,6 +4,7 @@ import geb.Browser
 import groovy.util.logging.Slf4j
 import io.appium.java_client.AppiumDriver
 import io.appium.java_client.android.AndroidDriver
+import io.appium.java_client.android.AndroidElement
 import io.appium.java_client.android.AndroidKeyCode
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
@@ -22,13 +23,16 @@ class AndroidHelper {
     }
 
     void back() {
-        androidDriverBackButton(driver)
+        if (driver instanceof AndroidDriver) androidDriverBackButton(driver)
+        else new Actions(driver).sendKeys(SelendroidKeys.BACK).perform()
     }
     void menu() {
-         driver.pressKeyCode(AndroidKeyCode.MENU)
+        if( driver instanceof AndroidDriver ) driver.pressKeyCode(AndroidKeyCode.MENU)
+        else new Actions(driver).sendKeys(SelendroidKeys.MENU).perform()
     }
     void home() {
-        androidDriverHomeButton(driver)
+        if( driver instanceof AndroidDriver ) androidDriverHomeButton(driver)
+        else new Actions(driver).sendKeys(SelendroidKeys.ANDROID_HOME).perform()
     }
 
     /**
@@ -36,8 +40,7 @@ class AndroidHelper {
      * @param driver
      */
     public static void androidDriverBackButton(AndroidDriver driver){
-        // driver.pressKeyCode(AndroidKeyCode.BACK);
-        driver.pressKeyCode(4)
+        driver.pressKeyCode(AndroidKeyCode.BACK) //  pressKeyCode(AndroidKeyCode.BACK);
     }
 
     public static void androidDriverHomeButton(AndroidDriver driver){

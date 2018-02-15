@@ -10,7 +10,6 @@ import org.openqa.selenium.Dimension
  * - Provides auto at checker with the currentActivity
  * - back, menu and home action
  * - performTap
- * - differs between appium and selendroid driver ----> no selendroid
  * TODO: get rid of the 'instanceof', use mixin or traits, i'm still in the java-thinkin-way...
  *
  */
@@ -20,9 +19,11 @@ abstract class AndroidBaseActivity extends Page {
     private AndroidHelper _helper
 
     static at = {
-        // here the activity not match:
+//        TODO: the actual activity is not matching the activities name:
+//        getActivityName() ? currentActivity == getActivityName() : true
         getCurrentActivity() ? currentActivity == getCurrentActivity() : true
     }
+
 
     public AndroidHelper getHelper(){
         if( _helper == null )
@@ -47,6 +48,7 @@ abstract class AndroidBaseActivity extends Page {
     String getActivityName() {
         return this.getClass().getSimpleName()
     }
+
 
     /**
      * Special behavior for Appium

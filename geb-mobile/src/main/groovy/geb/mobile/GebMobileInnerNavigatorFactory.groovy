@@ -3,14 +3,9 @@ package geb.mobile
 import geb.Browser
 
 import geb.mobile.android.AndroidUIAutomatorNonEmptyNavigator
-
-// import geb.mobile.android.AndroidNonEmptyNavigator
-
 import geb.mobile.ios.AppiumIosInstrumentationNonEmptyNavigator
-import geb.mobile.ios.IosInstrumentationNonEmptyNavigator
 import geb.navigator.EmptyNavigator
 import geb.navigator.Navigator
-import geb.navigator.NonEmptyNavigator
 import geb.navigator.factory.InnerNavigatorFactory
 import groovy.util.logging.Slf4j
 import io.appium.java_client.AppiumDriver
@@ -18,10 +13,14 @@ import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.ios.IOSDriver
 import org.openqa.selenium.Platform
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.CapabilityType
-import org.uiautomation.ios.client.uiamodels.impl.RemoteIOSDriver
 
 /**
+ *
+ *
+ * shelly notes:! here
  * This Factory decides, which NonEmptyNavigator will be created for the WebElements from the Driver
  * This is not always clear, cause
  *
@@ -40,7 +39,7 @@ import org.uiautomation.ios.client.uiamodels.impl.RemoteIOSDriver
  * IOS:
  *   IosInstrumentation
  *
- * Selendroid: --------> getting rid of it
+ * Selendroid:
  *    InstrumentationFramework
  *
  * IosDriver:
@@ -56,24 +55,26 @@ class GebMobileInnerNavigatorFactory implements InnerNavigatorFactory {
 
     private static String NAV_PREFIX = 'appium'
 
-    static Map<String, Class> _defaultNavigators = [android            : AndroidUIAutomatorNonEmptyNavigator,
-                                                    firefox            : AndroidUIAutomatorNonEmptyNavigator,
+    static Map<String, Class> _defaultNavigators = [
+                                                    android            : AndroidUIAutomatorNonEmptyNavigator,
+                                                    firefox            : FirefoxDriver,
                                                     ios                : AppiumIosInstrumentationNonEmptyNavigator,
                                                     'appium:NATIVE_APP': AndroidUIAutomatorNonEmptyNavigator,
-                                                    'appium:WEBVIEW_0' : AndroidUIAutomatorNonEmptyNavigator,
-                                                    'appium:WEBVIEW_1' : AndroidUIAutomatorNonEmptyNavigator,
-                                                    'appium:CHROMIUM'  : AndroidUIAutomatorNonEmptyNavigator,
-                                                    'appium:CHROME'    : AndroidUIAutomatorNonEmptyNavigator
+                                                    'appium:WEBVIEW_0' : ChromeDriver,
+                                                    'appium:WEBVIEW_1' : ChromeDriver,
+                                                    'appium:CHROMIUM'  : ChromeDriver,
+                                                    'appium:CHROME'    : ChromeDriver
     ]
+
 
     Map<Browser, Class> _innerNavigators = [:]
 
     GebMobileNavigatorFactory navigatorFactory
 
-    public GebMobileInnerNavigatorFactory(GebMobileNavigatorFactory navigatorFactory){
+    public GebMobileInnerNavigatorFactory(GebMobileNavigatorFactory navigatorFactory) {
         this.navigatorFactory = navigatorFactory
         String appPkg = navigatorFactory.browser.driver.capabilities.getCapability("appPackage")
-        _defaultNavigators.put "$NAV_PREFIX:WEBVIEW_$appPkg".toString() , AndroidUIAutomatorNonEmptyNavigator
+        _defaultNavigators.put "$NAV_PREFIX:WEBVIEW_$appPkg".toString(), ChromeDriver
     }
 
     private Class figureCorrectInnerNavigator(browser) {
@@ -97,18 +98,11 @@ class GebMobileInnerNavigatorFactory implements InnerNavigatorFactory {
                 String platformName = driver.capabilities.getCapability("platformName")
                 Platform platform = driver.capabilities.getCapability(CapabilityType.PLATFORM)
                 log.debug("trying to figure out correct Navigator for ${driver.getClass()} , $browserName, $platformName, ${platform.name()}")
-                if (driver instanceof RemoteIOSDriver) {
-                    clazz = IosInstrumentationNonEmptyNavigator
-                } else if (driver instanceof IOSDriver){
+                if (driver instanceof IOSDriver) {
                     clazz = AppiumIosInstrumentationNonEmptyNavigator
                     navigatorFactory.context = ctx
                 } else if (driver instanceof AndroidDriver) {
                     navigatorFactory.context = ctx
-
-                    log.debug("-------------------------AndroidDriver------------")
-
-
-
                     clazz = _defaultNavigators["$NAV_PREFIX:$navigatorFactory.context"]
 
                 } else {
@@ -133,10 +127,9 @@ class GebMobileInnerNavigatorFactory implements InnerNavigatorFactory {
      * @param elements The elements to back the navigator
      * @return The newly created navigator
      */
-    @Override
     Navigator createNavigator(Browser browser, List<WebElement> elements) {
-        if (!elements) return new EmptyNavigator(browser)
-        return figureCorrectInnerNavigator(browser).newInstance(browser, elements)
+        if (elements!=null && elements.size()==0) return new EmptyNavigator(browser)
+        return figureCorrectInnerNavigator(browser).newInstance(browser, elements==null?Collections.emptyList():elements)
     }
 
 }
