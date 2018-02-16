@@ -1,9 +1,13 @@
 package geb.mobile.android
 
 import geb.Page
+import io.appium.java_client.AppiumDriver
 import io.appium.java_client.MobileElement
+import io.appium.java_client.TouchAction
 import io.appium.java_client.android.AndroidDriver
+import io.appium.java_client.android.AndroidElement
 import org.openqa.selenium.Dimension
+
 
 /**
  * Base for AndroidActivities
@@ -41,6 +45,10 @@ abstract class AndroidBaseActivity extends Page {
     void home() {
         helper.home()
     }
+    void recents() {
+        helper.recents()
+    }
+
 
     /**
      * @return the Simple name of this Class, overwrite if classname is not the activityname, or null if it should not be checked
@@ -81,9 +89,28 @@ abstract class AndroidBaseActivity extends Page {
     public MobileElement scrollTo(String text){
         if( driver instanceof AndroidDriver ){
             return driver.scrollTo(text)
+//            return driver.findElementByAndroidUIAutomator(new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\""+str+"\").instance(0))")
         }
         null
     }
+
+
+//TODO: swipe left and right might not work when not supported by app, need to add check (notImplemented exception)
+    boolean swipeUp() {
+       return helper.swipeUp()
+    }
+
+    boolean swipeDown() {
+        return helper.swipeDown()
+    }
+
+    boolean swipeToLeft() {
+        return helper.swipeToLeft()
+    }
+    boolean swipeToRight() {
+        return helper.swipeToRight()
+    }
+
 
     public String getMessage(){
         $("#android:id/message").text()
