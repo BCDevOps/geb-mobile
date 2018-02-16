@@ -49,7 +49,7 @@ class AppiumIosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNa
 
         //XPath:
         if( selectorString.startsWith("//") ) {
-            log.info "Using Xpath"
+//            log.info "Using Xpath"
             return navigatorFor(browser.driver.findElements(By.xpath(selectorString)))
         }
 
@@ -58,20 +58,20 @@ class AppiumIosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNa
             value = selectorString.substring(1)
             //ClassName:
             if (value.startsWith("XCUIElementType") ||value.startsWith("UIA")) {
-                log.info "Using className"
+//                log.info "Using className"
                 return navigatorFor(driver.findElements(By.className(value)) )
             }
             //ID:
             else {
 //TODO: figure out findElementsById or findElementsByIosUIAutomation
-                log.info "Using ID"
+//                log.info "Using ID"
                 return (navigatorFor(driver.findElements(By.id(value))))
             }
         }
 
         //Resource ID:
         else {
-            log.debug("using uiautomation: $selectorString")
+//            log.debug("using uiautomation: $selectorString")
             try{
                 return navigatorFor(driver.findElementsByIosUIAutomation(selectorString))
             }catch(e){
