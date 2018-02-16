@@ -75,7 +75,7 @@ class GebMobileDriverFactory {
                 if( appPackage() ) capa.setCapability("appPackage", appPackage())
                 if (!capa.getCapability("deviceName")) capa.setCapability("deviceName", "Android");
 
-                log.info("Create AppiumDriver ")
+                log.info("Create Appium Android Driver ")
                 try {
                     driver = new AndroidDriver<AndroidElement>(getURL("http://localhost:4723/wd/hub"), capa)
                     //driver.setFileDetector(new LocalFileDetector())
@@ -96,7 +96,7 @@ class GebMobileDriverFactory {
 
             }
 
-            if (!driver) throw new RuntimeException("Appiumdriver could not be started")
+            if (!driver) throw new RuntimeException("Appium Driver could not be started")
         }
 //      Web Driver:
         else if (System.properties.framework == FRAMEWORK_SELENIUM) {
@@ -104,7 +104,7 @@ class GebMobileDriverFactory {
             System.properties.each { String k, v ->
                 def m = k =~ /^selenium_(.*)$/
                 if (m.matches()) {
-                    log.info "setting ios property: $k , $v"
+                    log.info "setting Web property: $k , $v"
                     capa.setCapability(m[0][1], v)
                 }
             }
