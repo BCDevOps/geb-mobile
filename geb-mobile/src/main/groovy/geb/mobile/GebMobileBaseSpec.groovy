@@ -167,6 +167,5 @@ class GebMobileBaseSpec extends GebSpec {
         hierarchy.'android.widget.FrameLayout'.@package.text()
     }
 
-
 }
 

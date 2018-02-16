@@ -7,7 +7,10 @@
 ---
 
 ## TODO
++ Add mobile touch screen specific methods (scroll + direction +distance/target, swipe, long press, )
++ Add mobile KeyCode
 + Local simulator/emulator (Xcode and ADB)
++ Find element for children
 + Chrome/Chromeium Driver
 + Auto import app bs from cloud device farm
 + Locate elements from layout xml using Appium Desktop
