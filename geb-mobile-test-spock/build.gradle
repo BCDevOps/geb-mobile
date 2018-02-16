@@ -9,6 +9,46 @@ tasks.withType(Test) { task ->
     outputs.upToDateWhen { false }
 }
 
+task androidOnLocalDevice(type: Test, dependsOn: [compileGroovy]) {
+
+    /**
+     * Need the following to be ready:
+     *  Appium (Check for installation with Appium-doctor)
+     *  ADB, with device connected
+     *  app apk
+     *
+     **/
+
+    File app = new File("/Users/shellyhan/Downloads/TestDemo/WikipediaSample.apk")
+    systemProperties.put "framework", "appium"
+    systemProperties.put "appium_app", app.getAbsolutePath()
+    systemProperties.put "appium_platformName", "Android"
+    systemProperties.put "appium_deviceName", "test device"
+
+    include '**/GebMobileAutomationTestWithPagesSpec.*'
+}
+
+
+task iOSOnLocalDevice(type: Test, dependsOn: [compileGroovy]) {
+
+    /**
+     * Install:
+     *  Appium
+     *  Xcode
+     *  ipa
+     **/
+
+    File app = new File("/Users/shellyhan/Downloads/TestDemo/WordPressSample.ipa")
+    systemProperties.put "framework", "appium"
+    systemProperties.put "appium_app", app.getAbsolutePath()
+    systemProperties.put "appium_platformName", "iOS"
+    systemProperties.put "appium_deviceName", "6"
+//    systemProperties.put "UDID", "????"
+
+    include '**/GebMobileAutomationTestWithPagesSpec.*'
+}
+
+
 task androidOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
     /**
      * UiAutomator2 capa minimum (with jdk1.8.0)
@@ -24,7 +64,7 @@ task androidOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
 
     systemProperties.put "framework", "appium"
     systemProperties.put "appium_app", "bs://6923b20d35af5655b0d622f1c4770311ea0818f9"
-    systemProperties.put "selenium.url", "http://shellytesting2:y8beASRQzjhXbqbXiqTx@hub.browserstack.com/wd/hub"
+    systemProperties.put "appium.url", "http://shellytesting2:y8beASRQzjhXbqbXiqTx@hub.browserstack.com/wd/hub"
     systemProperties.put "appium_platformName", "Android"
     systemProperties.put "appium_deviceName", "Google Pixel"
     systemProperties.put "appium_platformVersion", "7.1"
@@ -55,7 +95,7 @@ task iOSOnSauceLabs(type: Test, dependsOn: [compileGroovy]) {
 
     systemProperties.put "framework", "appium"
     systemProperties.put "appium_app", "https://s3.amazonaws.com/appium/TestApp8.4.app.zip"
-    systemProperties.put "selenium.url", "http://ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917@ondemand.saucelabs.com:80/wd/hub"
+    systemProperties.put "appium.url", "http://ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917@ondemand.saucelabs.com:80/wd/hub"
     systemProperties.put "appium_platformName", "iOS"
     systemProperties.put "appium_deviceName", "iPhone 6"
     systemProperties.put "appium_platformVersion", "8.4"
@@ -82,6 +122,6 @@ task uploadAppToDeviceFarm(type: Exec) {
 //    commandLine = ['curl', '-u', "ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917", '-X', 'POST', '-H', "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/ShellyTesting2/testapp.apk?overwrite=true --data-binary", "@/path/name.apk"]
 
 //Upload iOS app:
-//    commandLine = ['curl', '-u', "ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917", '-X', 'POST', '-H', "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/ShellyTesting2/testapp.apk?overwrite=true --data-binary", "@/path/name.ipa"]
+//    commandLine = ['curl', '-u', "ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917", '-X', 'POST', '-H', "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/ShellyTesting2/testapp.ipa?overwrite=true --data-binary", "@/path/name.ipa"]
 
 }
