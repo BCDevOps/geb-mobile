@@ -7,6 +7,7 @@ import geb.mobile.android.activities.HomeScreenActivity
 //import geb.mobile.android.activities.WebViewActivity
 import spock.lang.Stepwise
 
+
 /**
  * Created by gmueksch on 23.06.14.
  */
@@ -27,8 +28,9 @@ class GebMobileAutomationTestWithPagesSpec extends GebMobileBaseSpec {
         when: "I click on the search button"
         searchButton.click()
 
-        and: "I type in search string"
+        and: "I type in search string and scroll down"
         searchText = "BrowserStack"
+        swipeAction
 
         then: "I should see results"
         assert resultList.size() > 0
