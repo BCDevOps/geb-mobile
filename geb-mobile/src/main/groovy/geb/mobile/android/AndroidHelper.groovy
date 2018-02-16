@@ -9,6 +9,7 @@ import io.appium.java_client.android.AndroidKeyCode
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
 import io.appium.java_client.TouchAction
+import org.openqa.selenium.By
 
 import java.time.Duration
 
@@ -29,6 +30,7 @@ import java.time.Duration
 class AndroidHelper {
 
     private Browser browser
+    static Duration actionDuration = Duration.ofMillis(200)
 
     private WebDriver getDriver(){
         browser.driver
@@ -115,20 +117,19 @@ class AndroidHelper {
      * @return
      */
     public boolean swipeToLeft() {
-
-        if (driver instanceof AppiumDriver) {
-            def dim = driver.manage().window().size
-            int startX = dim.width - 5
-            int startY = dim.height / 2
-            int endX = 5
-            int endY = startY
-            try {
-                driver.swipe(startX, startY, endX, endY, 200)
-                return true
-            } catch (e) {
-                log.warn("Error on left swipe($startX, $startY, $endX, $endY, 200) : $e.message")
-            }
+        def dim = driver.manage().window().size
+        int startX = dim.width - 5
+        int startY = dim.height / 2
+        int endX = 5
+        int endY = startY
+        try {
+            TouchAction swipeAction = new TouchAction(driver).press(startX, startY).waitAction(actionDuration).moveTo(endX, endY).release()
+            swipeAction.perform()
+            return true
+        } catch (e) {
+            log.warn("Error on swipe left($startX, $startY, $endX, $endY, 200) : $e.message")
         }
+
         false
 
     }
@@ -139,19 +140,17 @@ class AndroidHelper {
      * @return
      */
     public boolean swipeToRight() {
-        if (driver instanceof AppiumDriver) {
-
-            def dim = driver.manage().window().size
-            int startX = 5
-            int startY = dim.height / 2
-            int endX = dim.width - 5
-            int endY = startY
-            try {
-                driver.swipe(startX, startY, endX, endY, 200)
-                return true
-            } catch (e) {
-                log.warn("Error on right swipe($startX, $startY, $endX, $endY, 200) : $e.message")
-            }
+        def dim = driver.manage().window().size
+        int startX = 5
+        int startY = dim.height / 2
+        int endX = dim.width - 5
+        int endY = startY
+        try {
+            TouchAction swipeAction = new TouchAction(driver).press(startX, startY).waitAction(actionDuration).moveTo(endX, endY).release()
+            swipeAction.perform()
+            return true
+        } catch (e) {
+            log.warn("Error on swipe right($startX, $startY, $endX, $endY, 200) : $e.message")
         }
         false
     }
@@ -162,13 +161,12 @@ class AndroidHelper {
         int startY = dim.height / 2
         int endX = startX
         int endY = dim.height -5
-        Duration dura = Duration.ofMillis(200)
         try {
-            TouchAction swipeAction = new TouchAction(driver).press(startX, startY).waitAction(dura).moveTo(endX, endY).release()
+            TouchAction swipeAction = new TouchAction(driver).press(startX, startY).waitAction(actionDuration).moveTo(endX, endY).release()
             swipeAction.perform()
             return true
         } catch (e) {
-            log.warn("Error on up swipe($startX, $startY, $endX, $endY, 200) : $e.message")
+            log.warn("Error on swipe to top($startX, $startY, $endX, $endY, 200) : $e.message")
         }
         false
     }
@@ -179,26 +177,24 @@ class AndroidHelper {
         int startY = dim.height - 5
         int endX = startX
         int endY = dim.height / 2
-        Duration dura = Duration.ofMillis(200)
         try {
-            TouchAction swipeAction = new TouchAction(driver).press(startX, startY).waitAction(dura).moveTo(endX, endY).release()
+            TouchAction swipeAction = new TouchAction(driver).press(startX, startY).waitAction(actionDuration).moveTo(endX, endY).release()
             swipeAction.perform()
             return true
         } catch (e) {
-            log.warn("Error on up swipe($startX, $startY, $endX, $endY, 200) : $e.message")
+            log.warn("Error on swipe to the bottom ($startX, $startY, $endX, $endY, 200) : $e.message")
         }
         false
     }
 
 
-    public static boolean isOnListView(AndroidDriver driver){
-        driver.findElementsByXPath("//android.widget.FrameLayout/android.widget.ListView").size()==1
+    public boolean isOnListView(){
+        driver.findElements(By.xpath("//android.widget.FrameLayout/android.widget.ListView")).size() == 1
     }
 
 //Use BACK() for closing elements:
-//    public static boolean closeListView(AndroidDriver driver){
-//        if( isOnListView(driver) )
-//            androidDriverBackButton(driver)
-//    }
+    public boolean closeListView(){
+        if( isOnListView() ) back()
+    }
 
 }
