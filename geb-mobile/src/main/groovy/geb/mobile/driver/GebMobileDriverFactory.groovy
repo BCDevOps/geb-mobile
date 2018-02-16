@@ -47,8 +47,8 @@ class GebMobileDriverFactory {
     public static String FRAMEWORK_SELENIUM = "selenium"
 
     public static URL getURL(String url) {
-        String seleniumUrl = System.getProperty("selenium.url")
-        if (seleniumUrl) return new URL(seleniumUrl)
+        String appiumUrl = System.getProperty("appium.url")
+        if (appiumUrl) return new URL(appiumUrl)
         else return new URL(url)
     }
 
@@ -77,7 +77,7 @@ class GebMobileDriverFactory {
 
                 log.info("Create Appium Android Driver ")
                 try {
-                    driver = new AndroidDriver<AndroidElement>(getURL("http://localhost:4723/wd/hub"), capa)
+                    driver = new AndroidDriver<AndroidElement>(getURL("http://0.0.0.0:4723/wd/hub"), capa)
                     //driver.setFileDetector(new LocalFileDetector())
                     //sleep(1000)
                     log.info("Driver created: $driver.capabilities")
@@ -90,7 +90,7 @@ class GebMobileDriverFactory {
 //          iOS:
             else{
                 log.info("Create Appium IOSDriver ")
-                driver = new IOSDriver<IOSElement>(getURL("http://localhost:4723/wd/hub"), capa)
+                driver = new IOSDriver<IOSElement>(getURL("http://0.0.0.0:4723/wd/hub"), capa)
                 driver.setFileDetector(new LocalFileDetector())
                 return driver
 
@@ -108,7 +108,7 @@ class GebMobileDriverFactory {
                     capa.setCapability(m[0][1], v)
                 }
             }
-            def selenium = new RemoteWebDriver(getURL("http://localhost:4444/wd/hub/"),capa)
+            def selenium = new RemoteWebDriver(getURL("http://0.0.0.0:4723/wd/hub"),capa)
             selenium.setFileDetector(new LocalFileDetector())
             return selenium
         }
