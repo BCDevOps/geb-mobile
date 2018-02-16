@@ -33,7 +33,7 @@ task androidOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
 }
 
 
-task iOSOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
+task iOSOnSauceLabs(type: Test, dependsOn: [compileGroovy]) {
     /**
      * UIAutomation capa minimum (for iOS 9.3 -)
      *
@@ -55,7 +55,7 @@ task iOSOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
 
     systemProperties.put "framework", "appium"
     systemProperties.put "appium_app", "https://s3.amazonaws.com/appium/TestApp8.4.app.zip"
-    systemProperties.put "selenium.url", "http://TestingBDD:78a08cd2-a8a0-45c6-895c-ec241e6452fa@ondemand.saucelabs.com:80/wd/hub"
+    systemProperties.put "selenium.url", "http://ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917@ondemand.saucelabs.com:80/wd/hub"
     systemProperties.put "appium_platformName", "iOS"
     systemProperties.put "appium_deviceName", "iPhone 6"
     systemProperties.put "appium_platformVersion", "8.4"
@@ -65,10 +65,23 @@ task iOSOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
 }
 
 
-task uploadAppToBrowserStack(type: Exec) {
+task uploadAppToDeviceFarm(type: Exec) {
+/**
+ *  BrowserStack:
+ **/
 //    Upload Android app:
-//    commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/Users/shellyhan/Downloads/TestDemo/WikipediaSample.apk"]
+//    commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/path/name.apk"]
 
 //Upload iOS app:
-    commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/Users/shellyhan/Downloads/TestDemo/WordPressSample.ipa"]
+    commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/path/name.ipa"]
+
+/**
+ *  SauceLabs:
+ **/
+//    Upload Android app:
+//    commandLine = ['curl', '-u', "ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917", '-X', 'POST', '-H', "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/ShellyTesting2/testapp.apk?overwrite=true --data-binary", "@/path/name.apk"]
+
+//Upload iOS app:
+//    commandLine = ['curl', '-u', "ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917", '-X', 'POST', '-H', "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/ShellyTesting2/testapp.apk?overwrite=true --data-binary", "@/path/name.ipa"]
+
 }
