@@ -6,6 +6,11 @@
 + WIP
 ---
 
+## Running Sample Test Cases
++ To run the Android test case: `./gradlew -i clean androidOnBrowserStack`
++ To run iOS test case: `./gradlew -i clean iOSOnBrowserStack`
++ To upload apps: replace app path in geb-mobile-test-spock/build.gradle, then run `./gradlew -i clean uploadAppToDeviceFarm`
+
 ## TODO
 + Add mobile touch screen specific methods (scroll + direction +distance/target, swipe, long press, )
 + Add mobile KeyCode
