@@ -35,18 +35,26 @@ task iOSOnLocalDevice(type: Test, dependsOn: [compileGroovy]) {
      * Install:
      *  Appium
      *  Xcode
-     *  ipa
+     *  brew install ideviceinstaller
+     *  app needed to be installed on iphone already
+     *
+     *
+     *  fill in device info:
      **/
 
-    File app = new File("/Users/shellyhan/Downloads/TestDemo/WordPressSample.ipa")
     systemProperties.put "framework", "appium"
-    systemProperties.put "appium_app", app.getAbsolutePath()
+    systemProperties.put "appium_app", ""
     systemProperties.put "appium_platformName", "iOS"
-    systemProperties.put "appium_deviceName", "6"
-//    systemProperties.put "UDID", "????"
+    systemProperties.put "appium_deviceName", ""
+    systemProperties.put "appium_automationName", "XCUITest"
+    systemProperties.put "appium_udid", ""
+    systemProperties.put "appium_xcodeOrgId", ""
+    systemProperties.put "appium_xcodeSigningId", ""
 
-    include '**/GebMobileAutomationTestWithPagesSpec.*'
+    include '**/UICatalogAppSpec.*'
 }
+
+
 
 
 task androidOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
