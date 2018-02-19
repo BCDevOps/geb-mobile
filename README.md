@@ -11,6 +11,23 @@
 + To run iOS test case: `./gradlew -i clean iOSOnBrowserStack`
 + To upload apps: replace app path in geb-mobile-test-spock/build.gradle, then run `./gradlew -i clean uploadAppToDeviceFarm`
 
+
+## Notice
+To run Android local device, please install adb:
++ install SDK `brew install android-platform-tools`
++ setup android SDK home path
++ connect device with USB, check if device is recognized by android device bridge `adb devices`
+
+To run iOS local device:
++ install Xcode
++ install npm at https://www.npmjs.com/get-npm
++ init npm for the package.json `npm init`
++ install XCUITest Driver: `npm install appium-xcuitest-driver`
++ connect device with USB, check if device is recognized by xcode `xcrun instruments -s devices`
++ follow instructions from appium repo: https://github.com/appium/appium-xcuitest-driver/blob/master/docs/real-device-config.md to install WebDriverAgent on iPhone (this will be an app that helps to install and run testing apps on the device)
++ make sure it works as mentioned from above config
++
+
 ## TODO
 + Add mobile touch screen specific methods (scroll + direction +distance/target, swipe, long press, )
 + Add mobile KeyCode
