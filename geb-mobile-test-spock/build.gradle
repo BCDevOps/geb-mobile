@@ -19,11 +19,11 @@ task androidOnLocalDevice(type: Test, dependsOn: [compileGroovy]) {
      *
      **/
 
-    File app = new File("/Users/shellyhan/Downloads/TestDemo/WikipediaSample.apk")
+    File app = new File("demo_apps/WikipediaSample.apk")
     systemProperties.put "framework", "appium"
     systemProperties.put "appium_app", app.getAbsolutePath()
     systemProperties.put "appium_platformName", "Android"
-    systemProperties.put "appium_deviceName", "test device"
+    systemProperties.put "appium_deviceName", "xx"
 
     include '**/GebMobileAutomationTestWithPagesSpec.*'
 }
@@ -42,14 +42,16 @@ task iOSOnLocalDevice(type: Test, dependsOn: [compileGroovy]) {
      *  fill in device info:
      **/
 
+    File app = new File("demo_apps/WordPressSample.ipa")
     systemProperties.put "framework", "appium"
-    systemProperties.put "appium_app", ""
+    systemProperties.put "appium_app", app.getAbsolutePath()
     systemProperties.put "appium_platformName", "iOS"
-    systemProperties.put "appium_deviceName", ""
+    systemProperties.put "appium_platformVersion", "xx"
+    systemProperties.put "appium_deviceName", "xx"
     systemProperties.put "appium_automationName", "XCUITest"
-    systemProperties.put "appium_udid", ""
-    systemProperties.put "appium_xcodeOrgId", ""
-    systemProperties.put "appium_xcodeSigningId", ""
+    systemProperties.put "appium_udid", "xx"
+    systemProperties.put "appium_xcodeOrgId", "xx"
+    systemProperties.put "appium_xcodeSigningId", "xx"
 
     include '**/UICatalogAppSpec.*'
 }
