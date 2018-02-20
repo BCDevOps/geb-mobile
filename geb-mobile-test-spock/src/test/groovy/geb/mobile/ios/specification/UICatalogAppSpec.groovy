@@ -27,5 +27,4 @@ class UICatalogAppSpec extends GebSpec {
         then: "Check result"
         resultField == "34"
     }
-
 }
