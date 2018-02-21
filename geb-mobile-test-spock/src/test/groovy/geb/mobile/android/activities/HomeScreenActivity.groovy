@@ -17,7 +17,6 @@ class HomeScreenActivity extends AndroidBaseActivity {
         targetResult {$("//android.widget.TextView[@text='HyperCard']")}
 
         swipeAction {
-//            waitFor(5,1) {
             if(!targetResult) {
                 swipeDown()
             } else {

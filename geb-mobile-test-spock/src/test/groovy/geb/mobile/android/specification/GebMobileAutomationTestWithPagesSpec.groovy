@@ -2,10 +2,6 @@ package geb.mobile.android.specification
 
 import geb.mobile.GebMobileBaseSpec
 import geb.mobile.android.activities.HomeScreenActivity
-//import geb.mobile.android.activities.RegisterUserActivity
-//import geb.mobile.android.activities.VerifyUserActivity
-//import geb.mobile.android.activities.WebViewActivity
-//import geb.mobile.android.activities.TakePictureActivity
 import spock.lang.Stepwise
 
 
@@ -35,25 +31,6 @@ class GebMobileAutomationTestWithPagesSpec extends GebMobileBaseSpec {
 
         then: "I should see results"
         assert resultList.size() > 0
-        doCameraFlow()
     }
-
-
-
-
-//    def "take picture with camera app"() {
-//        given: "open up camera"
-//        at TakePictureActivity
-//
-//        when: "accept location request"
-//        sleep(1000)
-//        locationButton.click()
-//
-//
-//        then: "take the pic"
-//        sleep(1000)
-//        shutterButton.click()
-//        sleep(5000)
-//    }
 
 }
