@@ -21,11 +21,11 @@ task androidOnLocalDevice(type: Test, dependsOn: [compileGroovy]) {
 
     File app = new File("demo_apps/WikipediaSample.apk")
     systemProperties.put "framework", "appium"
-//    systemProperties.put "appium_app", app.getAbsolutePath()
-    systemProperties.put "appium_appPackage", "com.huawei.camera"
-    systemProperties.put "appium_appActivity", "com.huawei.camera"
+    systemProperties.put "appium_app", app.getAbsolutePath()
+//    systemProperties.put "appium_appPackage", "com.huawei.camera"
+//    systemProperties.put "appium_appActivity", "com.huawei.camera"
     systemProperties.put "appium_platformName", "Android"
-    systemProperties.put "appium_deviceName", "test device"
+    systemProperties.put "appium_deviceName", "xx"
 
     include '**/GebMobileAutomationTestWithPagesSpec.*'
 }
