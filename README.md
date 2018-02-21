@@ -6,6 +6,12 @@
 + WIP
 ---
 
+## Docker usage:
++ Build the image and start a container
++ Go to `cd /bin/bash/geb-mobile`
++ Run `./gradlew -i clean androidOnBrowserStack`
+
+
 ## Running Sample Test Cases with Cloud-based devices
 + To run the Android test case: `./gradlew -i clean androidOnBrowserStack`
 + To run iOS test case: `./gradlew -i clean iOSOnBrowserStack`
