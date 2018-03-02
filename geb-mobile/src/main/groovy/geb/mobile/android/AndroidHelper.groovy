@@ -3,6 +3,7 @@ package geb.mobile.android
 import geb.Browser
 import groovy.util.logging.Slf4j
 import io.appium.java_client.AppiumDriver
+import io.appium.java_client.android.Activity
 import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.android.AndroidElement
 import io.appium.java_client.android.AndroidKeyCode
@@ -195,6 +196,22 @@ class AndroidHelper {
 //Use BACK() for closing elements:
     public boolean closeListView(){
         if( isOnListView() ) back()
+    }
+
+
+    boolean switch2Settings() {
+        try {
+
+            Activity act = new Activity("com.android.settings", "com.android.settings.Settings")
+            act.setStopApp(false)
+            driver.startActivity(act)
+            return true
+        }
+        catch (e) {
+            log.warn("Error change apps: $e.message")
+        }
+        false
+
     }
 
 }

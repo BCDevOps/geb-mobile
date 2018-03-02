@@ -116,6 +116,9 @@ abstract class AndroidBaseActivity extends Page {
         $("#android:id/message").text()
     }
 
+    boolean switch2Settings() {
+        return helper.switch2Settings()
+    }
 
 
 
