@@ -3,15 +3,9 @@ package geb.mobile.android.specification
 import geb.mobile.GebMobileBaseSpec
 import geb.mobile.android.activities.HomeScreenActivity
 import geb.mobile.android.activities.CameraActivity
+import geb.mobile.android.activities.SettingsActivity
 
 import spock.lang.Stepwise
-
-
-/**
- * Created by gmueksch on 23.06.14.
- */
-
-
 
 /**
  * Sample test case for android app on Wiki native app:
@@ -19,6 +13,37 @@ import spock.lang.Stepwise
  */
 @Stepwise
 class GebMobileAutomationTestWithPagesSpec extends GebMobileBaseSpec {
+
+
+//    def "Set screen lock PIN in settings"() {
+//        given: "I go to settings"
+//        at SettingsActivity
+//
+//        when:
+//        lockTab.click()
+//        sleep(500)
+//
+//        and:
+//        lockType.click()
+//        sleep(500)
+//        pinOptions.click()
+//        sleep(500)
+//        pinField = "123456"
+//        sleep(500)
+//
+//        and:
+//        nextButton.click()
+//
+//        and:
+//        pinField = "123456"
+//        nextButton.click()
+//
+//        then:
+//        sleep(1000)
+//
+//    }
+
+
 
     def "open test-app and enter search string "() {
         given: "I land on Home screen"
@@ -34,6 +59,9 @@ class GebMobileAutomationTestWithPagesSpec extends GebMobileBaseSpec {
         then: "I should see results"
         assert resultList.size() > 0
     }
+
+
+
 
 
 

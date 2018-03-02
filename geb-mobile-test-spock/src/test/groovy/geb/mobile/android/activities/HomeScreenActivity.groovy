@@ -24,5 +24,9 @@ class HomeScreenActivity extends AndroidBaseActivity {
                 return true
             }
         }
+
+//        switchApp {
+//            switch2Settings()
+//        }
     }
 }
