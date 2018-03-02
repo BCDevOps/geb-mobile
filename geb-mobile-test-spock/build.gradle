@@ -25,7 +25,7 @@ task androidOnLocalDevice(type: Test, dependsOn: [compileGroovy]) {
 //    systemProperties.put "appium_appPackage", "com.huawei.camera"
 //    systemProperties.put "appium_appActivity", "com.huawei.camera"
     systemProperties.put "appium_platformName", "Android"
-    systemProperties.put "appium_deviceName", "xx"
+    systemProperties.put "appium_deviceName", "test device"
 
     include '**/GebMobileAutomationTestWithPagesSpec.*'
 }
@@ -75,8 +75,8 @@ task androidOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
      **/
 
     systemProperties.put "framework", "appium"
-    systemProperties.put "appium_app", "bs://6923b20d35af5655b0d622f1c4770311ea0818f9"
-    systemProperties.put "appium.url", "http://shellytesting2:y8beASRQzjhXbqbXiqTx@hub.browserstack.com/wd/hub"
+    systemProperties.put "appium_app", "bs://d146c63966f4877f51a75d5cf1cab12a133ee775"
+    systemProperties.put "appium.url", "http://testingautomatio2:jBqsm9QpKx36tNSVzyx6@hub.browserstack.com/wd/hub"
     systemProperties.put "appium_platformName", "Android"
     systemProperties.put "appium_deviceName", "Google Pixel"
     systemProperties.put "appium_platformVersion", "7.1"
@@ -107,13 +107,23 @@ task iOSOnSauceLabs(type: Test, dependsOn: [compileGroovy]) {
 
     systemProperties.put "framework", "appium"
     systemProperties.put "appium_app", "https://s3.amazonaws.com/appium/TestApp8.4.app.zip"
-    systemProperties.put "appium.url", "http://ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917@ondemand.saucelabs.com:80/wd/hub"
+    systemProperties.put "appium.url", "http://AutomationTesting2:7b856390-dce2-45b2-b55f-a3e184a4c942@ondemand.saucelabs.com:80/wd/hub"
     systemProperties.put "appium_platformName", "iOS"
     systemProperties.put "appium_deviceName", "iPhone 6"
     systemProperties.put "appium_platformVersion", "8.4"
 
-
     include '**/UICatalogAppSpec.*'
+
+//    systemProperties.put "framework", "appium"
+//    systemProperties.put "testobjectApiKey", "appium"
+//    systemProperties.put "appium_app", "http://saucelabs.com/example_files/ContactManager.apk"
+//    systemProperties.put "appium.url", "http://AutomationTesting2:7b856390-dce2-45b2-b55f-a3e184a4c942@ondemand.saucelabs.com:80/wd/hub"
+//    systemProperties.put "appium_platformName", "Android"
+//    systemProperties.put "appium_deviceName", "Samsung Galaxy S4 Emulator"
+//    systemProperties.put "appium_platformVersion", "4.4"
+//
+//    include '**/GebMobileAutomationTestWithPagesSpec.*'
+
 }
 
 
@@ -122,7 +132,7 @@ task uploadAppToDeviceFarm(type: Exec) {
  *  BrowserStack:
  **/
 //    Upload Android app:
-//    commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/path/name.apk"]
+//    commandLine = ['curl', '-u', "testingautomatio2:jBqsm9QpKx36tNSVzyx6", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/path/name.apk"]
 
 //Upload iOS app:
     commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/path/name.ipa"]
