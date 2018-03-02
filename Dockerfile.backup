@@ -1,0 +1,176 @@
+FROM openshift/jenkins-slave-base-centos7
+#FROM registry.access.redhat.com/openshift3/jenkins-slave-base-rhel7
+
+EXPOSE 8080
+
+
+#RUN yum repolist > /dev/null && \
+#    yum install -y yum-utils && \
+#    yum-config-manager --disable \* &> /dev/null
+##     && \
+##    yum-config-manager --enable rhel-server-rhscl-7-rpms && \
+##    yum-config-manager --enable rhel-7-server-rpms && \
+##    yum-config-manager --enable rhel-7-server-optional-rpms && \
+##    yum-config-manager --enable rhel-7-server-fastrack-rpms
+
+
+## install java:
+#RUN yum -y install java-1.8.0-openjdk
+
+##------------------------- For cloud-based device connection ---------------
+### No appium needs to be installed as apps are being tested on the cloud devices
+### Import project file:
+RUN mkdir /opt/app
+ADD . /opt/app/
+
+#
+#
+#
+##------------------------- For local device connection -----------------------
+## java(install already), nodejs, appium, android, brew, carthage, xcode, groovy(there already), project folder
+#
+### prep:
+#RUN yum -y install wget
+#
+#
+#
+### nodejs (or use the Jenkins plugin? https://wiki.jenkins.io/display/JENKINS/NodeJS+Plugin):
+#RUN yum -y install gcc-c++ make
+#RUN curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
+#RUN yum -y install nodejs
+##RUN node -v
+##RUN npm -v
+#
+#
+### appium:
+##RUN sudo chown -R $USER:$USER /usr/lib
+#RUN npm install -g appium --unsafe-perm=true --allow-root
+#RUN npm install -g appium-doctor
+#
+#
+## running appium with specific ports:
+##RUN appium --webdriveragent-port 8100 -bp 4724 --selendroid-port 8080 --port 4723
+#
+#RUN appium-doctor
+#
+## Fix Nodejs binary issue:
+#RUN yum -y install which vim
+#
+#RUN npm update
+#
+#
+#### Android SDK----------------:
+##RUN yum -y install zlib.i686 ncurses-libs.i686 bzip2-libs.i686
+##
+##
+###RUN wget https://dl.google.com/dl/android/studio/ide-zips/3.0.1.0/android-studio-ide-171.4443003-linux.zip
+###RUN sudo mv android-studio-ide-171.4443003-linux.zip /opt
+###RUN unzip android-studio-ide-171.4443003-linux.zip
+##RUN wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
+##RUN sudo mv sdk-tools-linux-3859397.zip /opt
+##RUN unzip /opt/sdk-tools-linux-3859397.zip
+##
+##
+##ENV ANDROID_HOME "/"
+##RUN echo $ANDROID_HOME
+##ENV PATH=$ANDROID_HOME/tools:$PATH
+###ENV PATH=$ANDROID_HOME/platform-tools:$PATH
+##
+##ENV LD_LIBRARY_PATH=$JAVA_HOME/lib
+##ENV PATH=$LD_LIBRARY_PATH:$PATH
+#
+#
+#
+#
+#
+## Homebrew - linuxbrew----------------:
+## Prep:
+#RUN sudo yum update -y
+#RUN sudo yum groupinstall -y "Development Tools"
+#RUN sudo yum install -y \
+#        autoconf automake19 libtool gettext \
+#        git scons cmake flex bison \
+#        libcurl-devel curl \
+#        ncurses-devel ruby bzip2-devel expat-devel
+#
+## install linuxbrew
+#RUN git clone https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew
+#
+## Set env:
+##ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:cx86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig
+##ENV LINUXBREWHOME=$HOME/.linuxbrew
+##ENV PATH=$LINUXBREWHOME/bin:$PATH
+##ENV MANPATH=$LINUXBREWHOME/share/man
+###ENV INFOPATH=$LINUXBREWHOME/share/info
+##ENV PATH=$MANPATH:$PATH
+###ENV PATH=$INFOPATH:$PATH
+##ENV PKG_CONFIG_PATH=$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig
+##ENV LD_LIBRARY_PATH=$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib
+##
+##ENV PATH=$PKG_CONFIG_PATH:$PATH
+##ENV PATH=$LD_LIBRARY_PATH:$PATH
+#
+#
+#ENV PATH=/root/.linuxbrew/bin:/root/.linuxbrew/share/man:/root/.linuxbrew/lib64:/root/.linuxbrew/lib:/root/.linuxbrew/lib64/pkgconfig:/root/.linuxbrew/lib/pkgconfig:$PATH
+#
+#
+#
+##switch to another user (not root)
+##ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
+#
+#
+##--Not used-------------------
+##RUN apt-get update \
+##        && apt-get install -y --no-install-recommends bzip2 ca-certificates curl file g++ git locales make openssh-client patch sudo uuid-runtime \
+##        && rm -rf /var/lib/apt/lists/*
+##
+##RUN localedef -i en_US -f UTF-8 en_US.UTF-8 \
+##        && useradd -m -s /bin/bash linuxbrew \
+##        && echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+##ADD . /home/linuxbrew/.linuxbrew/Homebrew
+##RUN mkdir /home/linuxbrew/.linuxbrew/bin \
+##        && ln -s ../Homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/ \
+##        && chown -R linuxbrew: /home/linuxbrew/.linuxbrew \
+##        && cd /home/linuxbrew/.linuxbrew/Homebrew \
+##        && git remote set-url origin https://github.com/Linuxbrew/brew.git
+##
+##USER linuxbrew
+##WORKDIR /home/linuxbrew
+##ENV PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH \
+##        SHELL=/bin/bash \
+##        USER=linuxbrew
+##RUN brew config # install portable-ruby
+##---------------------
+#
+#
+#
+#
+### Set env:
+##RUN PATH=~/.linuxbrew/bin:/usr/local/bin:/usr/bin:/bin
+##RUN unset LD_LIBRARY_PATH PKG_CONFIG_PATH
+#
+#
+## Test the installation of linuxbrew:
+##RUN brew --version
+#
+##RUN ln -s $(which gcc) `brew --prefix`/bin/gcc-$(gcc -dumpversion |cut -d. -f1,2)
+##RUN ln -s $(which g++) `brew --prefix`/bin/g++-$(g++ -dumpversion |cut -d. -f1,2)
+##RUN ln -s $(which gfortran) `brew --prefix`/bin/gfortran-$(gfortran -dumpversion |cut -d. -f1,2)
+##
+##RUN brew doctor
+#
+#
+#
+###--------------------------------------------
+##
+##RUN git clone https://github.com/Linuxbrew/brew.git .linuxbrew/Homebrew \
+##	&& mkdir /home/linuxbrew/.linuxbrew/bin \
+##	&& ln -s ../Homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/ \
+##	&& brew config
+#
+#
+
+#USER 1001
+
+
+
