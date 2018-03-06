@@ -47,7 +47,7 @@ ENV OPENSHIFT_JENKINS_JVM_ARCH=x86_64
 ### No appium needs to be installed as apps are being tested on the cloud devices
 ### Import project file:
 RUN mkdir /opt/app
-ADD . /opt/app/
+ADD ../. /opt/app/
 
 RUN /opt/app/./gradlew -i clean androidOnBrowserStack
 
