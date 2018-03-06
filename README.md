@@ -3,22 +3,22 @@
 ---
 
 ## Under Development
-+ WIP
++ WIP: This tool has basic fuctionalities working. Please make request for more mobile actions and operations.
 ---
 
-## Docker usage:
-+ Build the image and start a container
-+ Go to `cd /bin/bash/geb-mobile`
-+ Run `./gradlew -i clean androidOnBrowserStack`
+## Running Sample Test Cases with Docker usage:
+1. Build the Docker image (Dockerfile in the CI folder)
+2. The sample test case will be executed as last step in building
 
 
-## Running Sample Test Cases with Cloud-based devices
+
+## Running Sample Test Cases with Cloud-based devices:
 + To run the Android test case: `./gradlew -i clean androidOnBrowserStack`
 + To run iOS test case: `./gradlew -i clean iOSOnBrowserStack`
 + To upload apps: replace app path in geb-mobile-test-spock/build.gradle, then run `./gradlew -i clean uploadAppToDeviceFarm`
 
 
-## Running Sample Test Cases with local devices
+## Running Sample Test Cases with Local devices:
 
 To run Android local device, please install adb:
 + install SDK `brew install android-platform-tools`
