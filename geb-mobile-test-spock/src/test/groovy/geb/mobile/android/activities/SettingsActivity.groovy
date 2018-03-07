@@ -13,7 +13,5 @@ class SettingsActivity extends AndroidBaseActivity {
         pinOptions {$("#com.android.settings:id/lock_pin")}
         pinField {$("#com.android.settings:id/password_entry")}
         nextButton {$("#com.android.settings:id/next_button")}
-
-
     }
 }

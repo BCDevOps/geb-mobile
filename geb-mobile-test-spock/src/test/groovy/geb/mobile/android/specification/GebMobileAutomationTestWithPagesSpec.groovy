@@ -4,6 +4,7 @@ import geb.mobile.GebMobileBaseSpec
 import geb.mobile.android.activities.HomeScreenActivity
 import geb.mobile.android.activities.CameraActivity
 import geb.mobile.android.activities.SettingsActivity
+import com.android.CameraActivity
 
 import spock.lang.Stepwise
 
@@ -62,21 +63,17 @@ class GebMobileAutomationTestWithPagesSpec extends GebMobileBaseSpec {
 
 
 
-
-
-
 //    def "test camera and take photo"() {
 //        given: "open the camera"
-//        sleep(3000)
 //        at CameraActivity
-//
+
 //        when: "I enable the location request"
 //        acceptButton.click()
-//
+
 //        and: "I click on the shutter button"
 //        sleep(1000)
 //        shutterButton.click()
-//
+
 //        then: "I should have the camera ready again"
 //        preview
 //    }

@@ -5,7 +5,7 @@ import geb.mobile.android.AndroidBaseActivity
 /**
  * Nexus 4 Camera
  */
-class CameraActivity extends AndroidBaseActivity{
+class CameraActivity extends AndroidBaseActivity {
 
     static content = {
         shutter(required:false,wait:true){ $("#com.android.camera2:id/shutter_button")}
