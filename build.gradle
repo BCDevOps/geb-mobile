@@ -22,7 +22,6 @@ allprojects {
         mavenLocal()
         mavenCentral()
     }
-
 }
 
 subprojects {
@@ -30,14 +29,13 @@ subprojects {
 
     dependencies {
 
-        compile("io.appium:java-client:$appiumClientVersion")
+        compile "io.appium:java-client:$appiumClientVersion"
         compile "org.json:json:20171018"
         compile "org.codehaus.groovy:groovy-all:$groovyVersion"
         compile "org.slf4j:slf4j-api:1.7.6"
-        compile 'ch.qos.logback:logback-classic:1.1.2'
+        compile "ch.qos.logback:logback-classic:1.1.2"
         compile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
         compile "junit:junit:$junitVersion"
-
 
         compile("org.gebish:geb-spock:$gebVersion") {
             exclude module: "groovy"
@@ -52,15 +50,11 @@ subprojects {
         testCompile "junit:junit:$junitVersion"
 
         // Spock reports
-        testCompile( 'com.athaydes:spock-reports:1.2.10' ) {
-            transitive = false // this avoids affecting your version of Groovy/Spock
-            // use 1.2.10 for 1.0spock
+        testCompile("com.athaydes:spock-reports:1.2.10") {
+            transitive = false
         }
     }
-
-
 }
-
 
 task checkenv {
     doLast {
