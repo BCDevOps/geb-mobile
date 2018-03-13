@@ -46,7 +46,7 @@ class GebMobileAutomationTestWithPagesSpec extends GebMobileBaseSpec {
 
 
 
-    def "open test-app and enter search string "() {
+    def "Open test-app and enter search string "() {
         given: "I land on Home screen"
         at HomeScreenActivity
 
@@ -63,7 +63,7 @@ class GebMobileAutomationTestWithPagesSpec extends GebMobileBaseSpec {
 
 
 
-//    def "test camera and take photo"() {
+//    def "Test camera and take photo"() {
 //        given: "open the camera"
 //        at CameraActivity
 

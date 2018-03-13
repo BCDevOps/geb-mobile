@@ -7,6 +7,10 @@ tasks.withType(Test) { task ->
     ignoreFailures = true
     systemProperties.put = System.properties
     outputs.upToDateWhen { false }
+//setup the spock report:
+    systemProperty 'com.athaydes.spockframework.report.outputDir', 'build/reports/spock'
+    systemProperty 'com.athaydes.spockframework.report.internal.HtmlReportCreator.inlineCss', false
+    systemProperty 'com.athaydes.spockframework.report.projectName',"Test build 1"
 }
 
 task androidOnLocalDevice(type: Test, dependsOn: [compileGroovy]) {
@@ -76,7 +80,7 @@ task androidOnBrowserStack(type: Test, dependsOn: [compileGroovy]) {
 
     systemProperties.put "framework", "appium"
     systemProperties.put "appium_app", "bs://d146c63966f4877f51a75d5cf1cab12a133ee775"
-    systemProperties.put "appium.url", "http://testingautomatio2:jBqsm9QpKx36tNSVzyx6@hub.browserstack.com/wd/hub"
+    systemProperties.put "appium.url", "http://xx.xx@hub.browserstack.com/wd/hub"
     systemProperties.put "appium_platformName", "Android"
     systemProperties.put "appium_deviceName", "Google Pixel"
     systemProperties.put "appium_platformVersion", "7.1"
@@ -107,23 +111,12 @@ task iOSOnSauceLabs(type: Test, dependsOn: [compileGroovy]) {
 
     systemProperties.put "framework", "appium"
     systemProperties.put "appium_app", "https://s3.amazonaws.com/appium/TestApp8.4.app.zip"
-    systemProperties.put "appium.url", "http://AutomationTesting2:7b856390-dce2-45b2-b55f-a3e184a4c942@ondemand.saucelabs.com:80/wd/hub"
+    systemProperties.put "appium.url", "http://xx.xx@ondemand.saucelabs.com:80/wd/hub"
     systemProperties.put "appium_platformName", "iOS"
     systemProperties.put "appium_deviceName", "iPhone 6"
     systemProperties.put "appium_platformVersion", "8.4"
 
     include '**/UICatalogAppSpec.*'
-
-//    systemProperties.put "framework", "appium"
-//    systemProperties.put "testobjectApiKey", "appium"
-//    systemProperties.put "appium_app", "http://saucelabs.com/example_files/ContactManager.apk"
-//    systemProperties.put "appium.url", "http://AutomationTesting2:7b856390-dce2-45b2-b55f-a3e184a4c942@ondemand.saucelabs.com:80/wd/hub"
-//    systemProperties.put "appium_platformName", "Android"
-//    systemProperties.put "appium_deviceName", "Samsung Galaxy S4 Emulator"
-//    systemProperties.put "appium_platformVersion", "4.4"
-//
-//    include '**/GebMobileAutomationTestWithPagesSpec.*'
-
 }
 
 
@@ -132,18 +125,18 @@ task uploadAppToDeviceFarm(type: Exec) {
  *  BrowserStack:
  **/
 //    Upload Android app:
-//    commandLine = ['curl', '-u', "testingautomatio2:jBqsm9QpKx36tNSVzyx6", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/path/name.apk"]
+//    commandLine = ['curl', '-u', "<username>:<password>", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/path/name.apk"]
 
 //Upload iOS app:
-    commandLine = ['curl', '-u', "shellytesting2:y8beASRQzjhXbqbXiqTx", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/path/name.ipa"]
+    commandLine = ['curl', '-u', "<username>:<password>", '-X', 'POST', "https://api.browserstack.com/app-automate/upload", '-F', "file=@/path/name.ipa"]
 
 /**
  *  SauceLabs:
  **/
 //    Upload Android app:
-//    commandLine = ['curl', '-u', "ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917", '-X', 'POST', '-H', "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/ShellyTesting2/testapp.apk?overwrite=true --data-binary", "@/path/name.apk"]
+//    commandLine = ['curl', '-u', "<username>:<password>", '-X', 'POST', '-H', "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/<username>/testapp.apk?overwrite=true --data-binary", "@/path/name.apk"]
 
-//Upload iOS app:
-//    commandLine = ['curl', '-u', "ShellyTesting2:b5cd63ed-c033-4b5d-9c60-12eda5218917", '-X', 'POST', '-H', "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/ShellyTesting2/testapp.ipa?overwrite=true --data-binary", "@/path/name.ipa"]
+//    Upload iOS app:
+//    commandLine = ['curl', '-u', "<username>:<password>", '-X', 'POST', '-H', "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/<username>/testapp.ipa?overwrite=true --data-binary", "@/path/name.ipa"]
 
 }
