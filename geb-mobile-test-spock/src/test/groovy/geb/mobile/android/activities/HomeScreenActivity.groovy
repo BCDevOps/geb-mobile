@@ -19,11 +19,13 @@ class HomeScreenActivity extends AndroidBaseActivity {
         swipeAction {
             if(!targetResult) {
                 swipeDown()
-            } else {
-                back()
-                return true
+                return false
             }
+            // back()
+            true
         }
+
+
 
 //        switchApp {
 //            switch2Settings()

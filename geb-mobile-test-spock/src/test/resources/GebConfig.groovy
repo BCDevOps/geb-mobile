@@ -13,4 +13,5 @@ navigatorFactory = { browser ->
     new GebMobileNavigatorFactory(browser)
 }
 
+//not using url:
 baseUrl = ""

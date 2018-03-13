@@ -53,12 +53,13 @@ class GebMobileAutomationTestWithPagesSpec extends GebMobileBaseSpec {
         when: "I click on the search button"
         searchButton.click()
 
-        and: "I type in search string and scroll down"
+        and: "I type in search string and swipe"
         searchText = "BrowserStack"
         swipeAction
 
         then: "I should see results"
         assert resultList.size() > 0
+        
     }
 
 
