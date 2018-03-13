@@ -15,7 +15,6 @@ ext.groovyVersion = '2.3.11'
 ext.appiumClientVersion = '5.0.4'
 ext.junitVersion = '4.11'
 
-
 allprojects {
     apply plugin: 'idea'
 
@@ -51,6 +50,12 @@ subprojects {
         }
 
         testCompile "junit:junit:$junitVersion"
+
+        // Spock reports
+        testCompile( 'com.athaydes:spock-reports:1.2.10' ) {
+            transitive = false // this avoids affecting your version of Groovy/Spock
+            // use 1.2.10 for 1.0spock
+        }
     }
 
 
