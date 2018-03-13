@@ -37,16 +37,12 @@ To run iOS local device:
 + To run the test case: replace device info in geb-mobile-test-spock/build.gradle, then run `./gradlew -i clean iOSOnLocalDevice`
 
 ## TODO
-+ Add mobile touch screen specific methods (scroll + direction +distance/target, swipe, long press, )
-+ Add mobile KeyCode
-+ Local simulator/emulator (Xcode and ADB)
++ Add mobile touch screen specific methods for iOS (scroll + target, long press..)
 + Find element for children
 + Chrome/Chromeium Driver
-+ Auto import app bs from cloud device farm
 + Locate elements from layout xml using Appium Desktop
 + data table in test case
 + Add old drivers: selendroid, UIautomation 1
-+ docker image
 
 
 ## Dependency versions:
