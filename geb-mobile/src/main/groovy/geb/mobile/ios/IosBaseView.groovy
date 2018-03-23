@@ -7,7 +7,20 @@ import org.openqa.selenium.ScreenOrientation
 
 /**
  * Created by gmueksch on 27.08.14.
+ *
+ *
+ * Notes by Shelly on 22.03.2018
+ *
+ * Limitation on iOS devices:
+ * 1. cannot get the activity/view name for current page -> 'at' cannot be used
+ * 2. cannot bring up the general settings, such as the airplane mode
+ * 3. cannot Lock screen
+ *
+ *
+ *
+ *
  */
+
 @Slf4j
 class IosBaseView extends Page{
 

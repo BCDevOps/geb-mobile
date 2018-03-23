@@ -18,7 +18,8 @@ import org.openqa.selenium.remote.RemoteWebDriver
 
 
 /**
- * Shelly notes:
+ * Notes by Shelly on 01.2018
+ *
  * Configure drivers:
  * ----- Appium ----- (Appium drivers replaced the platform specific selendroid and uiautomation drivers)
  * iOS

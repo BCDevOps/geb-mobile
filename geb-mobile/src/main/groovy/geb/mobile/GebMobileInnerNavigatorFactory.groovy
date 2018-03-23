@@ -18,9 +18,12 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.CapabilityType
 
 /**
+ * Created by gmueksch on 23.06.14.
  *
  *
- * shelly notes:! here
+ * Notes by Shelly on 01.2018
+ *
+ *
  * This Factory decides, which NonEmptyNavigator will be created for the WebElements from the Driver
  * This is not always clear, cause
  *
@@ -47,7 +50,7 @@ import org.openqa.selenium.remote.CapabilityType
  *
  *
  *
- * Created by gmueksch on 23.06.14.
+ *
  *
  */
 @Slf4j
