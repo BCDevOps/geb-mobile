@@ -3,7 +3,7 @@
 ---
 
 ## Under Development
-+ WIP: This tool has basic fuctionalities working. Please make request for more mobile actions and operations.
++ WIP: This tool has basic functionality working. Please make request for more mobile actions and operations.
 ---
 
 ## Running Sample Test Cases with Docker usage:
@@ -12,7 +12,7 @@
 
 
 
-## Running Sample Test Cases with Cloud-based devices:
+## Running Sample Test Cases with Cloud-based mobile devices:
 + To run the Android test case: `./gradlew -i clean androidOnBrowserStack`
 + To run iOS test case: `./gradlew -i clean iOSOnBrowserStack`
 + To upload apps: replace app path in geb-mobile-test-spock/build.gradle, then run `./gradlew -i clean uploadAppToDeviceFarm`
@@ -35,6 +35,12 @@ To run iOS local device:
 + follow instructions from appium repo: https://github.com/appium/appium-xcuitest-driver/blob/master/docs/real-device-config.md to install WebDriverAgent on iPhone (this will be an app that helps to install and run testing apps on the device)
 + make sure it works as mentioned from above config
 + To run the test case: replace device info in geb-mobile-test-spock/build.gradle, then run `./gradlew -i clean iOSOnLocalDevice`
+
+
+## Test Case Creation:
++ switch context of app between ["NATIVE_CONTEXT", "WEBVIEW_1", "WEBVIEW_2"...], use setNativeContext() and setWebViewContext()
++ Find elements use [#, @, //, ~] prefix to refer to different find methods (more details to be added later)
+
 
 ## TODO
 + Add mobile touch screen specific methods for iOS (scroll + target, long press..)
