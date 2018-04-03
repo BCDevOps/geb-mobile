@@ -11,18 +11,20 @@ import io.appium.java_client.ios.IOSElement
 import org.apache.commons.lang3.NotImplementedException
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.WebDriver
 
 /**
  * Created by gmueksch on 23.06.14.
- */
-
-
-/**
- * Locator strategies:
  *
- * From WebDriver:
+ *
+ * Shelly notes:
+ * -> Locator strategies
+ * From Appium:
  *      className           -- starting with "XCUIElementType-xxx"
  *      xpath               -- from XML page source
+ *
+ * From WebDriver:
+ *      CssSelector         -- Starting with @
  *
  *  From the platform specific:
  *      .findElementsByIosUIAutomation()     -- using the iOS Instruments framework
@@ -49,7 +51,7 @@ class AppiumIosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNa
 
         //XPath:
         if( selectorString.startsWith("//") ) {
-//            log.info "Using Xpath"
+            log.info "Using Xpath"
             return navigatorFor(browser.driver.findElements(By.xpath(selectorString)))
         }
 
@@ -58,27 +60,33 @@ class AppiumIosInstrumentationNonEmptyNavigator extends AbstractMobileNonEmptyNa
             value = selectorString.substring(1)
             //ClassName:
             if (value.startsWith("XCUIElementType") ||value.startsWith("UIA")) {
-//                log.info "Using className"
+                log.info "Using className"
                 return navigatorFor(driver.findElements(By.className(value)) )
             }
             //ID:
             else {
 //TODO: figure out findElementsById or findElementsByIosUIAutomation
-//                log.info "Using ID"
+                log.info "Using ID"
                 return (navigatorFor(driver.findElements(By.id(value))))
             }
         }
 
+        //Css Selector (For webview):
+        else if (selectorString.startsWith("@")) {
+            log.info "Using cssSelector"
+            value = selectorString.substring(1)
+            return navigatorFor(driver.findElements(By.cssSelector(value)))
+        }
+
         //Resource ID:
         else {
-//            log.debug("using uiautomation: $selectorString")
+            log.debug("using uiautomation: $selectorString")
             try{
                 return navigatorFor(driver.findElementsByIosUIAutomation(selectorString))
             }catch(e){
                 log.warn("Selector $selectorString: findElementsByIosUIAutomation: $e.message")
                 return new EmptyNavigator()
             }
-
         }
     }
 
