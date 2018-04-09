@@ -4,6 +4,7 @@
 
 ## Under Development
 + WIP: This tool has basic functionality working. Please make request for more mobile actions and operations.
++ notice: For iOS 10.x, the UI element will not be accessible from Appium according to https://github.com/facebook/WebDriverAgent/issues/703
 ---
 
 ## Running Sample Test Cases with Docker usage:
